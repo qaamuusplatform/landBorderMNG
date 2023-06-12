@@ -6,6 +6,6 @@ urlpatterns = [
 
     
     path('info/',views.borderInfo),
-    path('message/',views.borderMessage)
-    # path('border-reg/',views.borderReg),
+    path('message/',views.borderMessage),
+    path('report/',views.report)
 ]

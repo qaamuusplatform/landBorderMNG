@@ -1,10 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
+
+
 # Create your models here.
 class Product(models.Model):
     productName=models.CharField(max_length=255)
+    quantity=models.IntegerField(default=1)
+    description=models.TextField(default='')
 
+    def __str__(self) -> str:
+        return str(self.productName)
 
 
 
@@ -18,6 +24,10 @@ class UserProfile(models.Model):
     status=models.BooleanField(default=True)
 
 
+    def save(self,*args,**kwargs):
+        ReportInfo.objects.create(reportTitle='New User was registred',desc='user fullName'+self.fullName)
+        # self.save()
+        return super().save()
     def theImage(self):
         if self.profileImage:
             return mark_safe('<img src={} width="100px" >'.format(self.profileImage.url))
@@ -37,9 +47,12 @@ class BorderRegistration(models.Model):
     nationality=models.CharField(max_length=255)
     fingerPrintCD=models.CharField(max_length=10000,default='')
     registrationDate=models.DateTimeField(auto_now=True)
-    remainTime=models.DateTimeField(null=True,blank=True)
-    products=models.ManyToManyField(Product)   
+    userProducts=models.ManyToManyField(Product,null=True,blank=True)   
 
+    def save(self,*args,**kwargs):
+        ReportInfo.objects.create(reportTitle='New border was registred to this '+self.theUser.fullName,desc='message was sended'+self.idCardNo)
+        # self.save()
+        return super().save()
     def __str__(self) -> str:
         return str(self.idCardNo)
 
@@ -51,8 +64,20 @@ class MessagesFor(models.Model):
     fullText=models.TextField()
     datetime=models.DateTimeField(null=True,blank=True)
 
-
+    def save(self,*args,**kwargs):
+        ReportInfo.objects.create(reportTitle='New message was sended to this '+self.theUser.fullName,desc='message was sended'+self.fullText)
+        # self.save()
+        return super().save()
+    
     def __str__(self) -> str:
         return str(self.messageTitle)
 
 
+
+class ReportInfo(models.Model):
+    reportTitle=models.CharField(max_length=255)
+    desc=models.TextField(null=True,blank=True)
+    datetime=models.DateField(auto_now=True)
+
+    def __str__(self) -> str:
+        return str(self.reportTitle)

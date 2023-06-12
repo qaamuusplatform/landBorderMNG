@@ -8,7 +8,13 @@ from django.shortcuts import render,redirect
 # Create your views here.
 @login_required(login_url='/login/')
 def dashboard(request):
-    return render(request,"dashboard.html")
+    try:
+        currentUser=UserProfile.objects.filter(user=request.user.id).last()
+        borderLevel=BorderRegistration.objects.filter(theUser=currentUser)
+        allMessages=MessagesFor.objects.filter(theUser=currentUser)
+        return render(request,"dashboard.html",{"messages":allMessages,"currentUser":currentUser,"borderLevel":borderLevel})
+    except:
+        return render(request,"dashboard.html",{"messages":{},"currentUser":{}})
 
 def loginTheBorder(request):
     status=''
@@ -32,14 +38,31 @@ def loginTheBorder(request):
 
 @login_required(login_url='/login/')
 def borderInfo(request):
-    return render(request,"borderInfo.html")
+    try:
+        currentUser=UserProfile.objects.filter(user=request.user.id).last()
+        borderLevel=BorderRegistration.objects.filter(theUser=currentUser)
+        return render(request,"borderInfo.html",{"borderLevel":borderLevel,"currentUser":currentUser})
+    except:
+        return render(request,"borderInfo.html",{"messages":{},"currentUser":{}})
 
 @login_required(login_url='/login/')
 def borderMessage(request):
     try:
-        currentUser=UserProfile.objects.filter(user=User.objects.filter(pk=request.user.id))
-        messages=MessagesFor.objects.filter(theUser=currentUser)
-        print(messages)
-        return render(request,"messages.html",{"messages":messages,"currentUser":currentUser})
+        currentUser=UserProfile.objects.filter(user=request.user.id).last()
+        allMessages=MessagesFor.objects.filter(theUser=currentUser)
+        
+        return render(request,"messages.html",{"messages":allMessages,"currentUser":currentUser})
     except:
+        
         return render(request,"messages.html",{"messages":{},"currentUser":{}})
+    
+
+@login_required(login_url='/login/')
+def report(request):
+    try:
+        currentUser=UserProfile.objects.filter(user=request.user.id).last()
+        allMessages=MessagesFor.objects.filter(theUser=currentUser)
+        return render(request,"report.html",{"messages":allMessages,"currentUser":currentUser})
+    except:
+        
+        return render(request,"report.html",{"messages":{},"currentUser":{}})
