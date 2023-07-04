@@ -1,3 +1,4 @@
+import random
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
@@ -17,6 +18,7 @@ class Product(models.Model):
 class UserProfile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     fullName=models.CharField(max_length=255)
+    
     profileImage=models.ImageField(upload_to='borderImages/')
     userType=models.CharField(max_length=255,default='Normal User')
     number=models.CharField(max_length=255)
@@ -37,8 +39,17 @@ class UserProfile(models.Model):
     def __str__(self) -> str:
         return str(self.fullName)
 
+
+
+def generateRandomReffralCode():
+    randomNum ='borderId_'+str(random.randint(4,9000))
+    return randomNum
+   
 class BorderRegistration(models.Model):
+    porderGeneratedId=models.CharField(max_length=255,default=generateRandomReffralCode())
     theUser=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+    passportId=models.CharField(max_length=266,default='')
+    fromCountry=models.CharField(max_length=255,default='')
     idCardNo=models.CharField(max_length=255)
     expireDate=models.DateTimeField(null=True,blank=True)
     userState=models.CharField(max_length=255)
@@ -56,6 +67,8 @@ class BorderRegistration(models.Model):
     def __str__(self) -> str:
         return str(self.idCardNo)
 
+
+    
 
 class MessagesFor(models.Model):
     theUser=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
