@@ -1,3 +1,4 @@
+from datetime import timedelta,datetime
 import random
 from django.db import models
 from django.contrib.auth.models import User
@@ -45,13 +46,16 @@ def generateRandomReffralCode():
     randomNum ='borderId_'+str(random.randint(4,9000))
     return randomNum
    
+
+def three_month_from_today():
+    return datetime.now() + timedelta(days=30)
 class BorderRegistration(models.Model):
     porderGeneratedId=models.CharField(max_length=255,default=generateRandomReffralCode())
     theUser=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
     passportId=models.CharField(max_length=266,default='')
     fromCountry=models.CharField(max_length=255,default='')
     idCardNo=models.CharField(max_length=255)
-    expireDate=models.DateTimeField(null=True,blank=True)
+    expireDate=models.DateTimeField(default=three_month_from_today)
     userState=models.CharField(max_length=255)
     userAddress=models.CharField(max_length=555)
     enteringDate=models.DateTimeField()
