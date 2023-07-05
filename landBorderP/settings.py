@@ -147,6 +147,35 @@ USE_I18N = True
 USE_TZ = True
 
 
+CSRF_TRUSTED_ORIGINS =["https://landbordermng-production.up.railway.app","http://localhost:3000/","http://localhost","http://127.0.0.1:3000/"]
+# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS  = True
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+# CORS_ORIGIN_WHITELIST = [
+# 'http://localhost:3000',
+# 'http://127.0.0.1:3000'
+# ]
+CORS_ALLOW_CREDENTIALS = True
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
