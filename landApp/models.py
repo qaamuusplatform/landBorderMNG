@@ -43,17 +43,30 @@ class UserProfile(models.Model):
 
 
 def generateRandomReffralCode():
-    randomNum ='borderId_'+str(random.randint(4,9000))
+    randomNum ='borderId_'+str(UserProfile.objects.last().pk+1)
     return randomNum
    
 
 def three_month_from_today():
-    return datetime.now() + timedelta(days=30)
+    return datetime.now() + timedelta(days=60)
+
+
+COUNTRY_LIST = (
+    ('somalia','SOMALIA'),
+    ('united state', 'UNITED STATE'),
+    ('kenya', 'KENYA'),
+    ('united state', 'UNITED STATE'),
+    ('united state', 'UNITED STATE'),
+    ('united state', 'UNITED STATE'),
+    ('united state', 'UNITED STATE'),
+    ('united state', 'UNITED STATE'),
+)
+
 class BorderRegistration(models.Model):
     porderGeneratedId=models.CharField(max_length=255,default=generateRandomReffralCode())
     theUser=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
     passportId=models.CharField(max_length=266,default='')
-    fromCountry=models.CharField(max_length=255,default='')
+    fromCountry=models.CharField(max_length=255,choices=COUNTRY_LIST,default='somalia')
     idCardNo=models.CharField(max_length=255)
     expireDate=models.DateTimeField(default=three_month_from_today)
     userState=models.CharField(max_length=255)
