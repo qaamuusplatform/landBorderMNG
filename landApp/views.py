@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 
 # Create your views here.
-@login_required(login_url='/login/')
+# @login_required(login_url='/login/')
 def dashboard(request):
     try:
         currentUser=UserProfile.objects.filter(user=request.user.id).last()
@@ -56,6 +56,9 @@ def borderMessage(request):
         
         return render(request,"messages.html",{"messages":{},"currentUser":{}})
     
+
+def face(request):
+    return render(request,"face.html")
 
 @login_required(login_url='/login/')
 def report(request):
