@@ -8,13 +8,7 @@ from django.shortcuts import render,redirect
 # Create your views here.
 # @login_required(login_url='/login/')
 def dashboard(request):
-    try:
-        currentUser=UserProfile.objects.filter(user=request.user.id).last()
-        borderLevel=BorderRegistration.objects.filter(theUser=currentUser)
-        allMessages=MessagesFor.objects.filter(theUser=currentUser)
-        return render(request,"dashboard.html",{"messages":allMessages,"currentUser":currentUser,"borderLevel":borderLevel})
-    except:
-        return render(request,"dashboard.html",{"messages":{},"currentUser":{}})
+    return render(request,"dashboard.html",{"messages":{},"currentUser":{}})
 
 def loginTheBorder(request):
     status=''
@@ -36,36 +30,6 @@ def loginTheBorder(request):
     }
     return render(request,"login.html",data)
 
-@login_required(login_url='/login/')
-def borderInfo(request):
-    try:
-        currentUser=UserProfile.objects.filter(user=request.user.id).last()
-        borderLevel=BorderRegistration.objects.filter(theUser=currentUser)
-        return render(request,"borderInfo.html",{"borderLevel":borderLevel,"currentUser":currentUser})
-    except:
-        return render(request,"borderInfo.html",{"messages":{},"currentUser":{}})
-
-@login_required(login_url='/login/')
-def borderMessage(request):
-    try:
-        currentUser=UserProfile.objects.filter(user=request.user.id).last()
-        allMessages=MessagesFor.objects.filter(theUser=currentUser)
-        
-        return render(request,"messages.html",{"messages":allMessages,"currentUser":currentUser})
-    except:
-        
-        return render(request,"messages.html",{"messages":{},"currentUser":{}})
-    
 
 def face(request):
     return render(request,"face.html")
-
-@login_required(login_url='/login/')
-def report(request):
-    try:
-        currentUser=UserProfile.objects.filter(user=request.user.id).last()
-        allMessages=MessagesFor.objects.filter(theUser=currentUser)
-        return render(request,"report.html",{"messages":allMessages,"currentUser":currentUser})
-    except:
-        
-        return render(request,"report.html",{"messages":{},"currentUser":{}})

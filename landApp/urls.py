@@ -5,9 +5,6 @@ urlpatterns = [
     path('login/',views.loginTheBorder),
     
     path('face/',views.face),
+
     
-    
-    path('info/',views.borderInfo),
-    path('message/',views.borderMessage),
-    path('report/',views.report)
 ]
