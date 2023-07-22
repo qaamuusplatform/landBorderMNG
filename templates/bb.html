@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Face Verification</title>
+</head>
+
+<body>
+    <h1>Face Verification</h1>
+    <form>
+        <label for="image1">Image 1:</label>
+        <input type="file" id="image1" accept="image/*"><br><br>
+        <label for="image2">Image 2:</label>
+        <input type="file" id="image2" accept="image/*"><br><br>
+        <button type="button" onclick="verify()">Verify</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        function verify() {
+            const image1 = document.getElementById('image1').files[0];
+            const image2 = "../media/my_img.jpeg";
+            if (!image1) {
+                alert('Please select an image.');
+                return;
+            }
+            const reader1 = new FileReader();
+            reader1.readAsDataURL(image1);
+            reader1.onload = function () {
+                const encoded1 = reader1.result.split(',')[1];
+                fetch(image2)
+                    .then(response => response.blob())
+                    .then(blob => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(blob);
+                    }))
+                    .then(encoded2 => {
+                        const data = {
+                            encoded_image1: encoded1,
+                            encoded_image2: encoded2
+                        };
+                        fetch('https://faceapi.mxface.ai/api/v3/face/verify', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Subscriptionkey': 'XFgqea7lpiH8rKQfiT-OyMlh7XFug1721'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                            .then(response => response.json())
+                            .then(result => {
+                                console.log(result)
+                                const similarity = result.similarity
+                                const message = `The similarity score is ${similarity}.`
+                                document.getElementById('result').textContent = message
+                            })
+                            .catch(error => {
+                                console.error(error)
+                            });
+                    })
+                    .catch(error => {
+                        console.error(error)
+                    });
+            };
+        }
+    </script>
+</body>
+
+</html>

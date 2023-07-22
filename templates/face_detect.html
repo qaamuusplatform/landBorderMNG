@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Detecting Face</title>
+  <script defer src="{% static "face-api.min.js" %}"></script>
+  <script defer src="{% static "tt-script.js" %}"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas {
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <video id="video" width="720" height="560" autoplay muted></video>
+  <button onclick="takePictureSendToTheForm()">take</button>
+  <script>
+    function takePictureSendToTheForm() {
+      console.log('taled picture')
+      const video = document.getElementById('video');
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width-100, canvas.height-100);
+      const dataUrl = canvas.toDataURL();
+      window.opener.postMessage({ type: 'picture', dataUrl }, '*');
+      window.close();
+    }
+  </script>
+</body>
+
+</html>

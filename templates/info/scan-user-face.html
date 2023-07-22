@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    #picture-preview img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+    }
+</style>
+<div class="page-header card">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <i class="feather icon-home bg-c-blue"></i>
+                <div class="d-inline">
+                    <h5>Scan Users Face</h5>
+                    <span>any border must have a user profile to identfie</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="page-header-breadcrumb">
+                <ul class=" breadcrumb breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="index.html"><i class="feather icon-home"></i></a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="#!">Dashboard Analytics</a> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pcoded-inner-content">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Scan The User Face</h5>
+                                <span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>
+                            </div>
+                            <div class="card-block">
+                                <form id="main" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Face detection</label>
+                                        <div class="col-sm-4">
+
+                                            <span style="color: red;" id="faceMessage"></span>
+                                            <div id="picture-preview"
+                                                style="border: 1px solid grey;width: 150px;height: 150px;margin-bottom: 5px;">
+
+                                            </div>
+                                            <button type="button" id="takePhotoId" onclick="takeFacePhoto()"
+                                                class="btn btn-warning sm">take face</button>
+                                            <!-- <button type="button" class="btn btn-danger sm" disabled>delete</button> -->
+                                        </div>
+                                        <div class="col-sm-6">
+
+
+
+                                            <!-- <button type="button" class="btn btn-danger sm" disabled>delete</button> -->
+                                        </div>
+                                    </div>
+
+
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let allUsersData = []
+    let selectedUserId;
+    let matchedFaceId;
+
+    const takePhotoButton = document.getElementById("takePhotoId");
+
+    async function getAllUsers() {
+        const response = await fetch('/api/user-profile/');
+        const data = await response.json();
+        return data;
+    }
+
+    window.addEventListener('load', async () => {
+        console.log('Page loaded!');
+        // Call your function here, e.g.
+        allUsersData = await getAllUsers();
+
+    });
+
+    function takeFacePhoto() {
+        console.log('takeFacePhote');
+        window.open('/face_detect/', 'Take Face picture', 'width=720,height=560');
+    }
+
+    window.addEventListener('message', async (event) => {
+        if (event.origin !== window.location.origin) {
+            return;
+        }
+        if (event.data.type === 'picture') {
+            const pictureDataUrl = event.data.dataUrl;
+            // Handle the picture data here
+            const img = new Image();
+            img.src = pictureDataUrl;
+            img.addEventListener('load', async () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(async (blob) => {
+                    const file = new File([blob], 'picture.png', { type: 'image/png' });
+                    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+                    const previewDiv = document.getElementById('picture-preview');
+                    const previewImg = document.createElement('img');
+                    // Assuming you have a div element with the ID 'picture-preview'
+                    // Create a new FormData object
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    formData.append('csrfmiddlewaretoken', csrfToken);
+
+                    previewImg.src = URL.createObjectURL(file);
+                    previewDiv.innerHTML = '';
+                    previewDiv.appendChild(previewImg);
+
+                    takePhotoButton.disabled = true;
+                    takePhotoButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Searching ...';
+                    // Send the FormData object to the server
+                    const response = await fetch('/crop-image-face/', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await response.json();
+
+                    // Process the server response
+                    if (data.image_data) {
+                        const cropedImage = new Image();
+                        img1Encoded=`data:image/png;base64,${data.image_data}`
+                        cropedImage.src = `data:image/png;base64,${data.image_data}`;
+                        previewDiv.innerHTML = '';
+                        previewDiv.appendChild(cropedImage);
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = cropedImage.width;
+                        canvas.height = cropedImage.height;
+                        const context = canvas.getContext('2d');
+                        context.drawImage(cropedImage, 0, 0);
+                        const scanningCroppedImageEncoded1 = canvas.toDataURL().split(',')[1];
+
+
+
+                        for (var crUser of allUsersData) {
+                            selectedUserId = crUser.id;
+                            const userImage = crUser.faceDetected;
+                            // console.log(userImage)
+                            // Ensure that userImage is a valid File object
+                            if (!userImage) {
+                                console.error('Invalid userImage file object');
+                                continue;
+                            }
+
+                            // Encode the userImage file as a base64 string
+                            await fetch(userImage)
+                                .then(response => response.blob())
+                                .then(blob => new Promise((resolve, reject) => {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                                    reader.onerror = reject;
+                                    reader.readAsDataURL(blob);
+                                }))
+                                .then(async encoded2 => {
+                                    const data = {
+                                        encoded_image1: encoded2,
+                                        encoded_image2:img1Encoded
+                                    };
+                                    await fetch('https://faceapi.mxface.ai/api/v3/face/verify', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Subscriptionkey': 'XFgqea7lpiH8rKQfiT-OyMlh7XFug1721'
+                                        },
+                                        body: JSON.stringify(data)
+                                    }).then(response => response.json())
+                                        .then(result => {
+                                            console.log(result)
+                                            console.log(result.matchedFaces)
+                                            console.log(result.matchedFaces[0].matchResult)
+                                            console.loh(result.matchedFaces[0].matchResult==1)
+                                            if (result.matchedFaces[0].matchResult==1) {
+                                                takePhotoButton.disabled = false;
+                                                takePhotoButton.innerHTML = 'Take Bicutre';
+                                                matchedFaceId = crUser.id
+
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error(error)
+                                        });
+                                })
+                                .catch(error => {
+                                    console.error(error)
+                                });
+
+
+
+
+                            // reader.onloadend = async () => {
+                            //     const encodedUserImage = reader.result.split(',')[1];
+                            //     console.log(encodedUserImage)
+                            //     // Send a POST request to the face/verify API
+                            //     const data = {
+                            //         encoded_image1: scanningCroppedImageEncoded1,
+                            //         encoded_image2: encodedUserImage
+                            //     };
+                            //     const response = await fetch('https://faceapi.mxface.ai/api/v3/face/verify', {
+                            //         method: 'POST',
+                            //         headers: {
+                            //             'Content-Type': 'application/json',
+                            //             'Subscriptionkey': 'XFgqea7lpiH8rKQfiT-OyMlh7XFug1721'
+                            //         },
+                            //         body: JSON.stringify(data)
+                            //     });
+                            //     const result = await response.json();
+                            //     const similarity = result.similarity;
+                            //     console.log(`Similarity with user ${selectedUserId}: ${similarity}`);
+                            // };
+                            if (matchedFaceId.toString() == selectedUserId.toString()) {
+                                console.log('assdadas')
+                                // window.location.href=`/scaned-user-info/${selectedUserId}/`;
+                                break;
+                            }
+                        }
+                        console.log('not foudn')
+                    } else {
+                        document.getElementById('faceMessage').innerHTML = 'No Face detected'
+                        takePhotoButton.disabled = false;
+                        takePhotoButton.innerHTML = 'Take Bicutre';
+                    }
+
+                }, 'image/png');
+            });
+        }
+    });
+</script>
+
+{% endblock %}

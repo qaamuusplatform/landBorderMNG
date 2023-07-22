@@ -33,14 +33,16 @@ ALLOWED_HOSTS = ['.up.railway.app','127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    "jazzmin",
     'django.contrib.admin',
     "landApp",
+    "api",
+    "rest_framework",
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles'
 ]
 
 MIDDLEWARE = [
@@ -53,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 
 JAZZMIN_SETTINGS = {
@@ -73,6 +76,7 @@ JAZZMIN_SETTINGS = {
 }
 
 
+
 ROOT_URLCONF = 'landBorderP.urls'
 
 TEMPLATES = [
@@ -86,6 +90,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'api.views.userProfileInfo', 
             ],
         },
     },

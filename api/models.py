@@ -1,7 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser,User
 from django.utils.safestring import mark_safe
-
 
 # Create your models here.
 class Product(models.Model):
@@ -15,16 +14,38 @@ class Product(models.Model):
 
 
 class UserProfile(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
-    fullName=models.CharField(max_length=255)
-    profileImage=models.ImageField(upload_to='borderImages/')
+    username=models.CharField(max_length=255,unique=True)
+    password=models.CharField(max_length=255,default='12345')
+    is_superuser=models.BooleanField(default=False)
+    theUser=models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
+    fullName=models.CharField(max_length=255,default="")
+    faceDetected=models.FileField(upload_to='usersFaceDetected/',null=True,blank=True)
+    profileImage=models.ImageField(upload_to='borderImages/',null=True,blank=True)
     userType=models.CharField(max_length=255,default='Normal User')
-    number=models.CharField(max_length=255)
-    username=models.CharField(max_length=255)
+    number=models.CharField(max_length=255,default="252")
     status=models.BooleanField(default=True)
 
-
     def save(self,*args,**kwargs):
+        if self.theUser==None:
+            user=User.objects.filter(username=self.username)
+            if user.exists():
+                print('exist')
+                user=user.first()
+                user.username=self.username
+                user.is_active=True
+                user.save()
+                self.theUser=user
+            else:
+                print('not ')
+                newUser=User.objects.create(username=self.username)
+                print('created ')
+                newUser.set_password(self.password)
+                newUser.is_superuser=self.is_superuser
+                newUser.is_active=True
+                newUser.save()
+                self.theUser=newUser
+
+
         ReportInfo.objects.create(reportTitle='New User was registred',desc='user fullName'+self.fullName)
         # self.save()
         return super().save()
@@ -38,6 +59,7 @@ class UserProfile(models.Model):
         return str(self.fullName)
 
 class BorderRegistration(models.Model):
+    borderGeneratedId=models.CharField(max_length=255,default="0")
     theUser=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
     idCardNo=models.CharField(max_length=255)
     expireDate=models.DateTimeField(null=True,blank=True)

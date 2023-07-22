@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    #picture-preview img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+<div class="page-header card">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <i class="feather icon-home bg-c-blue"></i>
+                <div class="d-inline">
+                    <h5>Create New User</h5>
+                    <span>any border must have a user profile to identfie</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="page-header-breadcrumb">
+                <ul class=" breadcrumb breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="index.html"><i class="feather icon-home"></i></a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="#!">Dashboard Analytics</a> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pcoded-inner-content">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Basic Inputs Validation</h5>
+                                <span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>
+                            </div>
+                            <div class="card-block">
+                                <form id="main" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group row">
+                                        
+                                        <label class="col-sm-2 col-form-label">Border GeneratedID</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" required name="borderGeneratedId"
+                                                id="borderGeneratedId"  value="{{generatedUserId}}" placeholder="Enter your ID card number">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">TheUserProfile</label>
+                                        <div class="col-sm-10">
+                                            <select name="theUser" class="form-control" required>
+                                              {% for user in allUsers %}
+                                              
+                                              <option value="{{user.id}}">{{user.fullName}}</option>
+                                              {% endfor %}
+                                            </select>
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        
+                                        <label class="col-sm-2 col-form-label">ID Card Number</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" required name="idCardNo"
+                                                id="idCardNo" placeholder="Enter your ID card number">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Entering Date</label>
+                                        <div class="col-sm-10">
+                                            <input type="datetime-local" class="form-control" required name="enteringDate"
+                                                id="enteringDate">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                  
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">State</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="userState"
+                                                id="userState" placeholder="Enter your state">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Address</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="userAddress"
+                                                id="userAddress" placeholder="Enter your address">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                 
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Nationality</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="nationality"
+                                                id="nationality" placeholder="Enter your nationality">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Expiration Date</label>
+                                        <div class="col-sm-10">
+                                            <input type="datetime-local" value="{{expireDate}}" class="form-control" name="expireDate"
+                                                id="expireDate">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Products</label>
+                                        <div class="col-sm-10">
+                                            <select name="userProducts" class="form-control" multiple>
+                                                <option value="product1">Product 1</option>
+                                                <option value="product2">Product 2</option>
+                                                <option value="product3">Product 3</option>
+                                            </select>
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div> -->
+                                   
+                                 
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-primary m-b-0">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+  
+    const form = document.querySelector('#main');
+    const submitButton = form.querySelector('button[type="submit"]');
+
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        // Disable submit button and show spinner
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+        fetch('/api/border/', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Show success message using SweetAlert
+                swal({
+                    title: 'Success!',
+                    text: 'Your form has been submitted successfully.',
+                    icon: 'success'
+                });
+                location.reload()
+            })
+            .catch(error => {
+                console.error(error);
+                // Show error message using SweetAlert
+                swal({
+                    title: 'Error!',
+                    text: 'There was an error submitting your form. Please try again later.',
+                    icon: 'error'
+                });
+            })
+            .finally(() => {
+                // Enable submit button and reset text
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Submit';
+            });
+    });
+</script>
+{% endblock %}

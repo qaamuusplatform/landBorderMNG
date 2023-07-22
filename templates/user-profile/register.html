@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    #picture-preview img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+<div class="page-header card">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <i class="feather icon-home bg-c-blue"></i>
+                <div class="d-inline">
+                    <h5>Create New User</h5>
+                    <span>any border must have a user profile to identfie</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="page-header-breadcrumb">
+                <ul class=" breadcrumb breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="index.html"><i class="feather icon-home"></i></a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="#!">Dashboard Analytics</a> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pcoded-inner-content">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Basic Inputs Validation</h5>
+                                <span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>
+                            </div>
+                            <div class="card-block">
+                                <form id="main" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Face Mast detection</label>
+                                        <div class="col-sm-6">
+                                            <div id="picture-preview"
+                                                style="border: 1px solid grey;width: 150px;height: 150px;margin-bottom: 5px;">
+
+                                            </div>
+                                            <button type="button" onclick="takeFacePhote()"
+                                                class="btn btn-warning sm">take face</button>
+                                            <!-- <button type="button" class="btn btn-danger sm" disabled>delete</button> -->
+                                        </div>
+<!--                                            
+                                            <div class="col-sm-4">
+                                                <input type="file" class="form-control-file" required name="faceDetected"
+                                                    id="faceDetected" accept="image/*;capture=camera">
+                                                <span class="messages"></span>
+                                            </div> -->
+                                       
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Full Name</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" required name="fullName"
+                                                id="fullName" placeholder="Enter your full name">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Profile Image</label>
+                                        <div class="col-sm-10">
+                                            <input type="file" class="form-control-file" required name="profileImage"
+                                                id="profileImage">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">User Type</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" disabled name="userType"
+                                                value="Normal User" id="userType" placeholder="Enter your user type">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Number</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="number" required id="number"
+                                                placeholder="Enter your number">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Password</label>
+                                        <div class="col-sm-10">
+                                            <input type="password" class="form-control" name="password" required
+                                                id="password" placeholder="Enter your password">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Username</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="username" required
+                                                id="username" placeholder="Enter your username">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-primary m-b-0">Submit    </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function takeFacePhote() {
+        console.log('takeFacePhote')
+        var faceDetected = window.open('/face_detect/', 'Take Face picture', 'width=720,height=560');
+   
+    }
+    let cropedFaceDetected
+    window.addEventListener('message', event => {
+        if (event.origin !== window.location.origin) {
+            return;
+        }
+        if (event.data.type === 'picture') {
+            const pictureDataUrl = event.data.dataUrl;
+            // Handle the picture data here
+            const img = new Image();
+            img.src = pictureDataUrl;
+            img.addEventListener('load', () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(async blob => {
+                    const file = new File([blob], 'picture.png', { type: 'image/png' });
+                    // Assuming you have a div element with the ID 'picture-preview'
+                    const previewDiv = document.getElementById('picture-preview');
+                    // Create a new img element to display the image
+                    const previewImg = document.createElement('img');
+
+                    previewImg.src = URL.createObjectURL(file);
+                    previewDiv.appendChild(previewImg);
+
+
+
+                    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    formData.append('csrfmiddlewaretoken', csrfToken);
+                    const response = await fetch('/crop-image-face/', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await response.json();
+                    if (data.image_data) {
+                        const cropedImage = new Image();
+                        cropedImage.src = `data:image/png;base64,${data.image_data}`;
+                        previewDiv.innerHTML = '';
+                        previewDiv.appendChild(cropedImage);
+                        
+
+                        const base64Data = cropedImage.src.split(',')[1];
+                        const binaryData = atob(base64Data);
+                        const uint8Array = new Uint8Array(binaryData.length);
+                        for (let i = 0; i < binaryData.length; i++) {
+                            uint8Array[i] = binaryData.charCodeAt(i);
+                        }
+                        cropedFaceDetected=new Blob([uint8Array], { type: 'image/png' });
+                        cropedFaceDetected.name = 'picture.png';
+
+                    }
+
+
+
+
+
+
+
+                }, 'image/png');
+            });
+        }
+    });
+
+
+    const form = document.querySelector('#main');
+    const submitButton = form.querySelector('button[type="submit"]');
+
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        formData.append('faceDetected', cropedFaceDetected, cropedFaceDetected.name);
+        // Disable submit button and show spinner
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+        fetch('/api/user-profile/', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Show success message using SweetAlert
+                swal({
+                    title: 'Success!',
+                    text: 'Your form has been submitted successfully.',
+                    icon: 'success'
+                });
+                location.reload()
+            })
+            .catch(error => {
+                console.error(error);
+                // Show error message using SweetAlert
+                swal({
+                    title: 'Error!',
+                    text: 'There was an error submitting your form. Please try again later.',
+                    icon: 'error'
+                });
+            })
+            .finally(() => {
+                // Enable submit button and reset text
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Submit';
+            });
+    });
+</script>
+{% endblock %}

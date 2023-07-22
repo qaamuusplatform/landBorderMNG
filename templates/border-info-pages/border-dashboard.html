@@ -1,0 +1,72 @@
+{% extends 'border-auth-base.html' %}
+{% block content %}
+<div class="page-header card">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <i class="feather icon-sidebar bg-c-blue"></i>
+                <div class="d-inline">
+                    <h5>Welcome <strong style="font-weight: bold;">{{userInfo.username}}</strong></h5>
+                    <span>{{userInfo.userType}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="page-header-breadcrumb">
+                <ul class=" breadcrumb breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="index.html"><i class="feather icon-home"></i></a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="#!">Page layout</a></li>
+                    <li class="breadcrumb-item"><a href="#!">Horizontal</a></li>
+                    <li class="breadcrumb-item"><a href="#!">Static layout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pcoded-inner-content">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card proj-progress-card">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-xl-6 col-md-6">
+                                        <h6>All Your Messages</h6>
+                                        <h5 class="m-b-30 f-w-700">{{allMessages.count}}
+                                            <!-- <span
+                                                class="text-c-green m-l-10">+1.69%</span> -->
+                                            </h5>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-c-red"
+                                                style="width:100%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-md-6">
+                                        <h6>Borders</h6>
+                                        <h5 class="m-b-30 f-w-700">{{allBorders.count}}
+                                            <!-- <span
+                                                class="text-c-red m-l-10">-0.5%</span> -->
+                                            </h5>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-c-blue"
+                                                style="width:65%"></div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
