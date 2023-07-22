@@ -31,8 +31,8 @@ urlpatterns = [
     path('report-list/',views.reportList),
 
 
-
-
+    
+    path('forget-password/',views.forgetPasword),
 
 
 

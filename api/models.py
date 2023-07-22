@@ -19,6 +19,7 @@ class UserProfile(models.Model):
     is_superuser=models.BooleanField(default=False)
     theUser=models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
     fullName=models.CharField(max_length=255,default="")
+    gender=models.CharField(max_length=255,default='Male')
     faceDetected=models.FileField(upload_to='usersFaceDetected/',null=True,blank=True)
     profileImage=models.ImageField(upload_to='borderImages/',null=True,blank=True)
     userType=models.CharField(max_length=255,default='Normal User')
@@ -103,3 +104,11 @@ class ReportInfo(models.Model):
 
     def __str__(self) -> str:
         return str(self.reportTitle)
+
+
+class ScannedFaceDt(models.Model):
+    imageName=models.CharField(max_length=255)
+    scannedImage=models.FileField(upload_to='scannedImage/',null=True,blank=True)
+
+
+    

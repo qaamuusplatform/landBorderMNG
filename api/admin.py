@@ -8,7 +8,7 @@ class ProductAdmin(admin.ModelAdmin):
     # ordering: 
     search_fields=('id','productName','quantity','description')
 
-admin.register(ReportInfo)
+admin.site.register(ScannedFaceDt)
 
 
 @admin.register(UserProfile)
@@ -35,3 +35,4 @@ class ReportInfoAdmin(admin.ModelAdmin):
     list_display=('reportTitle','desc','datetime')
     # ordering: 
     search_fields=('reportTitle','desc','datetime')
+

@@ -13,4 +13,10 @@ urlpatterns = [
     
     path('message/', MessagesForListCreate.as_view(), name='message'),
     path('message/<int:pk>/', MessagesForDetailDelete.as_view(), name='message-detail'),
+
+
+    
+    path('scanned-face/', ScannedFaceListCreate.as_view(), name='scanned-face'),
+    path('scanned-face/<int:pk>/', ScannedFaceDetailDelete.as_view(), name='scanned-face'),
+    
 ]

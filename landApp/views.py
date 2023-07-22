@@ -244,3 +244,19 @@ def messageInfo(request):
 def reportList(request):
     allReport = ReportInfo.objects.all()
     return render(request,"report/list.html",{"allReport":allReport})
+
+
+# report
+def forgetPasword(request):
+    if request.POST:
+        username=UserProfile.objects.filter(username=request.POST.get('username'))
+        password=request.POST.get('password')
+        
+        if username.exists():
+            username=username.first()
+            username.theUser.set_password(password)
+            username.theUser.save()
+            return render(request,"forget-password.html",{"change":"1","status":"succesfuly password changed"})
+        else:
+             return render(request,"forget-password.html",{"change":"2","status":"username not exit"})
+    return render(request,"forget-password.html",{"change":"0","status":"username not exit"})

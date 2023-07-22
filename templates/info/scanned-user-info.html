@@ -35,8 +35,7 @@
                     <h5>Full User Detail</h5>
                     <div class="card-header-right">
                         <ul class="list-unstyled card-option">
-                            <li class="first-opt"><i
-                                    class="feather icon-chevron-left open-card-option"></i>
+                            <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i>
                             </li>
                             <li><i class="feather icon-maximize full-card"></i></li>
                             <li><i class="feather icon-minus minimize-card"></i>
@@ -44,43 +43,44 @@
                             <li><i class="feather icon-refresh-cw reload-card"></i>
                             </li>
                             <li><i class="feather icon-trash close-card"></i></li>
-                            <li><i
-                                    class="feather icon-chevron-left open-card-option"></i>
+                            <li><i class="feather icon-chevron-left open-card-option"></i>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="card-block">
-                    <div class="latest-update-box">
-                        <div class="row p-t-20 p-b-30">
-                            <div class="col-auto text-right update-meta p-r-0">
-                                {% if userInfo.profileImage %}
-                                <img src="{{userInfo.profileImage.url}}" alt="user image"
-                                    class="img-radius " width="50" height="50">
-                                {% endif %}
+                    <div class="col-6">
+                        <div class="latest-update-box">
+                            <div class="row p-t-20 p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    {% if userInfo.profileImage %}
+                                    <img src="{{userInfo.profileImage.url}}" alt="user image" class="img-radius "
+                                        width="70" height="70">
+                                    {% endif %}
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!">
+                                        <h4>{{userInfo.fullName}}.</h4>
+                                    </a>
+                                    <p class="text-muted m-b-0">{{userInfo.number}}</p>
+                                </div>
                             </div>
-                            <div class="col p-l-5">
-                                <a href="#!">
-                                    <h4>{{userInfo.fullName}}.</h4>
-                                </a>
-                                <p class="text-muted m-b-0">{{userInfo.number}}</p>
+                            <div class="row p-b-30">
+                                <div class="col-auto text-right update-meta p-r-0">
+                                    <i class="fea  "></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </div>
+                                <div class="col p-l-5">
+                                    <a href="#!">
+                                        <h6>User Type.</h6>
+                                    </a>
+                                    <p class="text-muted m-b-0">{{userInfo.userType}}</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="row p-b-30">
-                            <div class="col-auto text-right update-meta p-r-0">
-                                <i
-                                    class="feather icon-briefcase bg-c-red update-icon"></i>
-                            </div>
-                            <div class="col p-l-5">
-                                <a href="#!">
-                                    <h6>User Type.</h6>
-                                </a>
-                                <p class="text-muted m-b-0">{{userInfo.userType}}</p>
-                            </div>
-                        </div>
-                      
-                      
                     </div>
+                 
+
+
                 </div>
             </div>
         </div>
@@ -97,7 +97,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5>Border Info</h5>
-                      
+
                     </div>
                     <div class="card-block">
                         <div class="table-responsive dt-responsive">
@@ -130,11 +130,11 @@
                                             {{ product.name }}{% if not forloop.last %}, {% endif %}
                                             {% endfor %}
                                         </td> -->
-                                        
+
                                     </tr>
                                     {% endfor %}
                                 </tbody>
-                             
+
                             </table>
                         </div>
                     </div>
