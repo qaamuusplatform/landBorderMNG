@@ -18,5 +18,16 @@ urlpatterns = [
     
     path('scanned-face/', ScannedFaceListCreate.as_view(), name='scanned-face'),
     path('scanned-face/<int:pk>/', ScannedFaceDetailDelete.as_view(), name='scanned-face'),
+
+
+    path('scan-finger/', ScanFingerListCreate.as_view(), name='scan-finger'),
+    path('get-scanned-finger/<int:pk>/', ScanFingerDetailDelete.as_view(), name='get-scanned-finger'),
+
+
+
+    
+    # fingerprint
+    path('get-finger-print-scaned/',GetScannedFingerPrint.as_view())
+
     
 ]

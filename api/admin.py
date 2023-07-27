@@ -9,6 +9,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields=('id','productName','quantity','description')
 
 admin.site.register(ScannedFaceDt)
+admin.site.register(FingerPrintScanDt)
 
 
 @admin.register(UserProfile)

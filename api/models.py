@@ -112,3 +112,6 @@ class ScannedFaceDt(models.Model):
 
 
     
+class FingerPrintScanDt(models.Model):
+    fingerPrintCode=models.TextField()
+    fingerPrintImage=models.FileField(upload_to='scannedFingers/', null=True, blank=True, default='fingerprint.jpg')

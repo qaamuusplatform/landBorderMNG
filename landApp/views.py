@@ -58,7 +58,7 @@ def loginUser(request):
 
 
 def cropFaceImageToBase64(request):
-    path="C:/Users/qaamuus/Documents/mohaData/landBorderP/landApp/haarcascade_frontalface_default.xml"
+    path="haarcascade_frontalface_default.xml"
     img = cv2.imdecode(np.frombuffer(request.FILES['image'].read(), np.uint8), cv2.IMREAD_COLOR) # Read the uploaded image
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     face_cascade = cv2.CascadeClassifier(path)
@@ -260,3 +260,7 @@ def forgetPasword(request):
         else:
              return render(request,"forget-password.html",{"change":"2","status":"username not exit"})
     return render(request,"forget-password.html",{"change":"0","status":"username not exit"})
+
+
+
+

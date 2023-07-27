@@ -46,23 +46,27 @@
                                 <form id="main" method="post">
                                     {% csrf_token %}
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Face Mast detection</label>
+                                        <label class="col-sm-2 col-form-label">Face detection</label>
                                         <div class="col-sm-6">
                                             <div id="picture-preview"
                                                 style="border: 1px solid grey;width: 150px;height: 150px;margin-bottom: 5px;">
-
                                             </div>
-                                            <button type="button" onclick="takeFacePhote()"
+                                            <button type="button" onclick="getScannedFingerPrint()"
                                                 class="btn btn-warning sm">take face</button>
                                             <!-- <button type="button" class="btn btn-danger sm" disabled>delete</button> -->
                                         </div>
-<!--                                            
-                                            <div class="col-sm-4">
-                                                <input type="file" class="form-control-file" required name="faceDetected"
-                                                    id="faceDetected" accept="image/*;capture=camera">
-                                                <span class="messages"></span>
-                                            </div> -->
-                                       
+
+                                        <div class="col-sm-4">
+                                            <div id="picture-preview"
+                                            style="border: 1px solid grey;width: 150px;height: 150px;margin-bottom: 5px;">
+
+                                        </div>
+                                        <button type="button" onclick="takeFacePhote()"
+                                            class="btn btn-primary sm">take face</button>
+                                        <!-- <button type="button" class="btn btn-danger sm" disabled>delete</button> -->
+                                           
+                                        </div>
+
                                     </div>
 
                                     <div class="form-group row">
@@ -127,7 +131,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2"></label>
                                         <div class="col-sm-10">
-                                            <button type="submit" class="btn btn-primary m-b-0">Submit    </button>
+                                            <button type="submit" class="btn btn-primary m-b-0">Submit </button>
                                         </div>
                                     </div>
                                 </form>
@@ -143,7 +147,7 @@
     function takeFacePhote() {
         console.log('takeFacePhote')
         var faceDetected = window.open('/face_detect/', 'Take Face picture', 'width=720,height=560');
-   
+
     }
     let cropedFaceDetected
     window.addEventListener('message', event => {
@@ -186,7 +190,7 @@
                         cropedImage.src = `data:image/png;base64,${data.image_data}`;
                         previewDiv.innerHTML = '';
                         previewDiv.appendChild(cropedImage);
-                        
+
 
                         const base64Data = cropedImage.src.split(',')[1];
                         const binaryData = atob(base64Data);
@@ -194,7 +198,7 @@
                         for (let i = 0; i < binaryData.length; i++) {
                             uint8Array[i] = binaryData.charCodeAt(i);
                         }
-                        cropedFaceDetected=new Blob([uint8Array], { type: 'image/png' });
+                        cropedFaceDetected = new Blob([uint8Array], { type: 'image/png' });
                         cropedFaceDetected.name = 'picture.png';
 
                     }
