@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <style>
     #picture-preview img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    #scanned-finger-preview img {
         max-width: 100%;
         max-height: 100%;
     }
@@ -47,24 +52,24 @@
                                     {% csrf_token %}
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Face detection</label>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div id="picture-preview"
                                                 style="border: 1px solid grey;width: 150px;height: 150px;margin-bottom: 5px;">
                                             </div>
-                                            <button type="button" onclick="getScannedFingerPrint()"
-                                                class="btn btn-warning sm">take face</button>
+                                            <button type="button" onclick="takeFacePhote()"
+                                                class="btn btn-warning sm">TAKE FACE IMG</button>
                                             <!-- <button type="button" class="btn btn-danger sm" disabled>delete</button> -->
                                         </div>
 
                                         <div class="col-sm-4">
-                                            <div id="picture-preview"
-                                            style="border: 1px solid grey;width: 150px;height: 150px;margin-bottom: 5px;">
+                                            <div id="scanned-finger-preview"
+                                                style="border: 1px solid grey;width: 150px;height: 150px;margin-bottom: 5px;">
 
-                                        </div>
-                                        <button type="button" onclick="takeFacePhote()"
-                                            class="btn btn-primary sm">take face</button>
-                                        <!-- <button type="button" class="btn btn-danger sm" disabled>delete</button> -->
-                                           
+                                            </div>
+                                            <button type="button" onclick="getScannedFingerPrint()"
+                                                class="btn btn-primary sm">TAKE PHOTO</button>
+                                            <!-- <button type="button" class="btn btn-danger sm" disabled>delete</button> -->
+
                                         </div>
 
                                     </div>
@@ -94,6 +99,11 @@
                                                 id="profileImage">
                                             <span class="messages"></span>
                                         </div>
+                                    </div>
+                                  
+                                            <input type="text" class="form-control-file" hidden name="fingerPrintCode"
+                                                id="fingerPrintCode">
+                                          
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">User Type</label>
@@ -149,6 +159,7 @@
         var faceDetected = window.open('/face_detect/', 'Take Face picture', 'width=720,height=560');
 
     }
+
     let cropedFaceDetected
     window.addEventListener('message', event => {
         if (event.origin !== window.location.origin) {
@@ -214,6 +225,42 @@
         }
     });
 
+    async function getScannedFingerPrint() {
+        const scanGifDiv = document.getElementById('scanned-finger-preview');
+        scanGifDiv.innerHTML=''
+        // Create a new img element to display the image
+        const gifImg = document.createElement('img');
+        
+        gifImg.src = '/static/gif/scanning.gif';
+        scanGifDiv.appendChild(gifImg);
+
+        await fetch('/api/get-finger-print-scaned/')
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Error: ' + response.status);
+                }
+            }).then(data => {
+                // Process the response data
+                console.log(data);
+                const scannedFingerDiv = document.getElementById('scanned-finger-preview');
+                scannedFingerDiv.innerHTML=''
+
+                // Create a new img element to display the image
+                const previewImg = document.createElement('img');
+
+                previewImg.src = data.fingerPrintImage;
+                scannedFingerDiv.appendChild(previewImg);
+                var inputElement = document.getElementById('fingerPrintCode');
+                inputElement.value = data.fingerPrintCode;
+
+                // Create a new img element to display the image
+            }).catch(error => {
+                // Handle any errors
+                console.error(error);
+            });
+    }
 
     const form = document.querySelector('#main');
     const submitButton = form.querySelector('button[type="submit"]');
@@ -257,5 +304,6 @@
                 submitButton.innerHTML = 'Submit';
             });
     });
+
 </script>
 {% endblock %}

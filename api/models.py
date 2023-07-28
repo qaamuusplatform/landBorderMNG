@@ -20,6 +20,7 @@ class UserProfile(models.Model):
     theUser=models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
     fullName=models.CharField(max_length=255,default="")
     gender=models.CharField(max_length=255,default='Male')
+    fingerPrintCode=models.TextField(null=True,blank=True)
     faceDetected=models.FileField(upload_to='usersFaceDetected/',null=True,blank=True)
     profileImage=models.ImageField(upload_to='borderImages/',null=True,blank=True)
     userType=models.CharField(max_length=255,default='Normal User')
@@ -113,5 +114,5 @@ class ScannedFaceDt(models.Model):
 
     
 class FingerPrintScanDt(models.Model):
-    fingerPrintCode=models.TextField()
+    fingerPrintCode=models.TextField(null=True,blank=True)
     fingerPrintImage=models.FileField(upload_to='scannedFingers/', null=True, blank=True, default='fingerprint.jpg')
