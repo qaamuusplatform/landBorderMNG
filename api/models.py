@@ -20,7 +20,6 @@ class UserProfile(models.Model):
     theUser=models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
     fullName=models.CharField(max_length=255,default="")
     gender=models.CharField(max_length=255,default='Male')
-    fingerPrintCode=models.TextField(null=True,blank=True)
     faceDetected=models.FileField(upload_to='usersFaceDetected/',null=True,blank=True)
     profileImage=models.ImageField(upload_to='borderImages/',null=True,blank=True)
     userType=models.CharField(max_length=255,default='Normal User')
@@ -46,9 +45,10 @@ class UserProfile(models.Model):
                 newUser.is_active=True
                 newUser.save()
                 self.theUser=newUser
-
-
-        ReportInfo.objects.create(reportTitle='New User was registred',desc='user fullName'+self.fullName)
+        if self._state.adding is True:
+            ReportInfo.objects.create(reportTitle='New User was registred',desc='user fullName'+self.fullName)
+        else:
+            ReportInfo.objects.create(reportTitle=f'This User {self.fullName} was Changed',desc='user fullName'+self.fullName)
         # self.save()
         return super().save()
     def theImage(self):
@@ -74,7 +74,7 @@ class BorderRegistration(models.Model):
     userProducts=models.ManyToManyField(Product,null=True,blank=True)   
 
     def save(self,*args,**kwargs):
-        ReportInfo.objects.create(reportTitle='New border was registred to this '+self.theUser.fullName,desc='message was sended'+self.idCardNo)
+        ReportInfo.objects.create(reportTitle=f'New border was registred to this {self.theUser.fullName}',desc=f'message was sended {self.idCardNo}')
         # self.save()
         return super().save()
     def __str__(self) -> str:

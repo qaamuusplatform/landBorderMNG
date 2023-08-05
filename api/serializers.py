@@ -4,7 +4,7 @@ from .models import UserProfile,BorderRegistration,MessagesFor,ScannedFaceDt,Fin
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ('id', 'username','faceDetected', 'fingerPrintCode','fullName', 'profileImage', 'userType', 'number', 'status')
+        fields = ('id', 'username','faceDetected','fullName', 'profileImage', 'userType', 'number', 'status')
 
 
 class ScannedFaceDtSerializer(serializers.ModelSerializer):

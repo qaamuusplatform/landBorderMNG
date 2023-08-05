@@ -1,0 +1,84 @@
+{% extends 'border-auth-base.html' %}
+{% block content %}
+<div class="page-header card">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <i class="feather icon-sidebar bg-c-blue"></i>
+                <div class="d-inline">
+                    <h5>All Borders</h5>
+                    <span>Messages That sends</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="page-header-breadcrumb">
+                <ul class=" breadcrumb breadcrumb-title">
+                    <li class="breadcrumb-item"> <a href="index.html"><i class="feather icon-home"></i></a> </li>
+                    <li class="breadcrumb-item"> <a href="#!">Page layot</a> </li>
+                    <li class="breadcrumb-item"> <a href="#!">Horizontal</a> </li>
+                    <li class="breadcrumb-item"> <a href="#!">Static lut</a> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pcoded-inner-content">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card proj-progress-card">
+                            <div class="card-block">
+                                <table id="dom-jqry" class="table table-striped table-bordered nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>B-Generated ID</th>
+                                            <th>ID Card No</th>
+                                            <th>Expire Date</th>
+                                            <th>User State</th>
+                                            <th>User Address</th>
+                                            <th>Entering Date</th>
+                                            <th>Nationality</th>
+                                            <th>Registration Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for border in allBorderInfo %}
+                                        <tr>
+                                            <td>{{ border.borderGeneratedId }}</td>
+                                            <td>{{ border.idCardNo }}</td>
+                                            <td>{{ border.expireDate }}</td>
+                                            <td>{{ border.userState }}</td>
+                                            <td>{{ border.userAddress }}</td>
+                                            <td>{{ border.enteringDate }}</td>
+                                            <td>{{ border.nationality }}</td>
+                                            <td>{{ border.registrationDate }}</td>
+                                            <!-- <td>
+                                                {% for product in border.userProducts.all %}
+                                                {{ product.name }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </td> -->
+    
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+    
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

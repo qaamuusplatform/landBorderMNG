@@ -38,6 +38,7 @@ urlpatterns = [
 
     # border
     path('border/',views.borderInfoDashboard),
-    path('border/messages/',views.borderInfoMessages)
+    path('border/messages/',views.borderInfoMessages),
+    path('border/all-borders/',views.allBordersInfos)
 
 ]

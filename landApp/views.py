@@ -76,26 +76,26 @@ def cropFaceImageToBase64(request):
         return JsonResponse({'error': 'no face detected'})
 
 
-def cropFaceImage(theFullImage):
-    url=theFullImage
-    path="C:/Users/qaamuus/Documents/mohaData/landBorderP/landApp/haarcascade_frontalface_default.xml"
-    # img = cv2.imread(url)
-    img = cv2.imdecode(np.frombuffer(request.FILES['faceDetected'].read(), np.uint8), cv2.IMREAD_COLOR) # Read the uploaded image
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    face_cascade = cv2.CascadeClassifier(path)
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30)) # Detect faces
-    if len(faces) > 0:
-        (x, y, w, h) = faces[0]
-        cropped = img[y:y+h, x:x+w] # Crop the image to the first detected face
-        buffer = BytesIO()
-        cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB) # Convert the cropped image to RGB format
-        pil_image = Image.fromarray(cropped) # Convert the cropped image to a PIL Image object
-        pil_image.save(buffer, format='JPEG') # Save the PIL Image to a buffer in JPEG format
-        image_file = InMemoryUploadedFile(buffer, None, 'image.jpg', 'image/jpeg', buffer.getbuffer().nbytes, None) # Create an InMemoryUploadedFile from the buffer
-        return image_file
-        # Save the UserProfile instance
-    else:
-        return "no face"
+# def cropFaceImage(theFullImage):
+#     url=theFullImage
+#     path="C:/Users/qaamuus/Documents/mohaData/landBorderP/landApp/haarcascade_frontalface_default.xml"
+#     # img = cv2.imread(url)
+#     img = cv2.imdecode(np.frombuffer(request.FILES['faceDetected'].read(), np.uint8), cv2.IMREAD_COLOR) # Read the uploaded image
+#     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+#     face_cascade = cv2.CascadeClassifier(path)
+#     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30)) # Detect faces
+#     if len(faces) > 0:
+#         (x, y, w, h) = faces[0]
+#         cropped = img[y:y+h, x:x+w] # Crop the image to the first detected face
+#         buffer = BytesIO()
+#         cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB) # Convert the cropped image to RGB format
+#         pil_image = Image.fromarray(cropped) # Convert the cropped image to a PIL Image object
+#         pil_image.save(buffer, format='JPEG') # Save the PIL Image to a buffer in JPEG format
+#         image_file = InMemoryUploadedFile(buffer, None, 'image.jpg', 'image/jpeg', buffer.getbuffer().nbytes, None) # Create an InMemoryUploadedFile from the buffer
+#         return image_file
+#         # Save the UserProfile instance
+#     else:
+#         return "no face"
 
 def validateImages(request):
     allUsers=UserProfile.objects.first()
@@ -133,7 +133,12 @@ def allUserProfiles(request):
 
 
 def generateRandomBorderGeneratedId():
-    randomNum ='borderId_'+str(BorderRegistration.objects.last().pk+1)
+    print( BorderRegistration.objects.exists())
+    randomNum='borderId_1'
+    if BorderRegistration.objects.exists():
+        'borderId_'+str(BorderRegistration.objects.last().pk+1)
+    
+    # randomNum = BorderRegistration.objects.exists()==True if 'borderId_'+str(BorderRegistration.objects.last().pk+1) else 'borderId_1'
     return randomNum
 def three_month_from_today():
     return datetime.now() + timedelta(days=60)   
@@ -229,6 +234,18 @@ def borderInfoMessages(request):
         return render(request,"border-info-pages/border-messages.html",{"allMessages":allMessages})
     else:
         return redirect("/")
+
+
+@login_required(login_url='/login/')
+def allBordersInfos(request):
+    if request.user.is_superuser==False:
+        currentUserInfo = UserProfile.objects.filter(theUser=request.user).first()
+        allBorderInfo = BorderRegistration.objects.filter(theUser=currentUserInfo)
+        return render(request,"border-info-pages/border-all-border-info.html",{"allBorderInfo":allBorderInfo})
+    else:
+        return redirect("/")
+
+
 
 
 # report

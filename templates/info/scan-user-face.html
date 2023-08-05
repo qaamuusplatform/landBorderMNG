@@ -65,7 +65,7 @@
                                                 class="btn btn-warning sm">take face</button>
                                             <!-- <button type="button" class="btn btn-danger sm" disabled>delete</button> -->
                                         </div>
-                                            <div class="col-sm-4">
+                                            <!-- <div class="col-sm-4">
                                                 <div id="scanned-finger-preview"
                                                     style="border: 1px solid grey;width: 150px;height: 150px;margin-bottom: 5px;">
     
@@ -74,7 +74,7 @@
                                                     class="btn btn-primary sm">TAKE PHOTO</button>
                                                 <!-- <button type="button" class="btn btn-danger sm" disabled>delete</button> -->
     
-                                            </div>
+                                            </div> -->
 
 
                                     </div>
@@ -98,50 +98,50 @@
 
 
 
-    async function getScannedFingerPrint() {
-        const scanGifDiv = document.getElementById('scanned-finger-preview');
-        scanGifDiv.innerHTML=''
-        // Create a new img element to display the image
-        const gifImg = document.createElement('img');
+    // async function getScannedFingerPrint() {
+    //     const scanGifDiv = document.getElementById('scanned-finger-preview');
+    //     scanGifDiv.innerHTML=''
+    //     // Create a new img element to display the image
+    //     const gifImg = document.createElement('img');
         
-        gifImg.src = '/static/gif/scanning.gif';
-        scanGifDiv.appendChild(gifImg);
+    //     gifImg.src = '/static/gif/scanning.gif';
+    //     scanGifDiv.appendChild(gifImg);
 
-        await fetch('/api/get-finger-print-scaned/')
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Error: ' + response.status);
-                }
-            }).then(data => {
-                // Process the response data
-                console.log(data);
-                const scannedFingerDiv = document.getElementById('scanned-finger-preview');
-                scannedFingerDiv.innerHTML=''
+    //     await fetch('/api/get-finger-print-scaned/')
+    //         .then(response => {
+    //             if (response.ok) {
+    //                 return response.json();
+    //             } else {
+    //                 throw new Error('Error: ' + response.status);
+    //             }
+    //         }).then(data => {
+    //             // Process the response data
+    //             console.log(data);
+    //             const scannedFingerDiv = document.getElementById('scanned-finger-preview');
+    //             scannedFingerDiv.innerHTML=''
 
-                // Create a new img element to display the image
-                const previewImg = document.createElement('img');
+    //             // Create a new img element to display the image
+    //             const previewImg = document.createElement('img');
 
-                previewImg.src = data.fingerPrintImage;
-                scannedFingerDiv.appendChild(previewImg);
-                for (var crUser of allUsersData) {
-                    selectedUserId = crUser.id;
-                    if (data.fingerPrintCode==crUser.fingerPrintCode) {
-                        window.location.href=`/scaned-user-info/${selectedUserId}/`;
-                        break
-                    }
+    //             previewImg.src = data.fingerPrintImage;
+    //             scannedFingerDiv.appendChild(previewImg);
+    //             for (var crUser of allUsersData) {
+    //                 selectedUserId = crUser.id;
+    //                 if (data.fingerPrintCode==crUser.fingerPrintCode) {
+    //                     window.location.href=`/scaned-user-info/${selectedUserId}/`;
+    //                     break
+    //                 }
                     
 
 
-                }
+    //             }
 
-                // Create a new img element to display the image
-            }).catch(error => {
-                // Handle any errors
-                console.error(error);
-            });
-    }
+    //             // Create a new img element to display the image
+    //         }).catch(error => {
+    //             // Handle any errors
+    //             console.error(error);
+    //         });
+    // }
 
 
 

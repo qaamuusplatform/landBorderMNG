@@ -108,8 +108,12 @@
                                     <tr>
                                         <td>{{ user.id }}</td>
                                         <td style="font-weight: bold;">{{ user.fullName }}</td>
-                                        <td><img src="{{ user.profileImage.url }}" alt="{{ user.fullName }}"
-                                                width="100"></td>
+                                        <td>
+                                            {%if user.profileImage %}
+                                            <img src="{{ user.profileImage.url }}" alt="{{ user.fullName }}"
+                                                width="100">
+                                            {% endif %}
+                                        </td>
                                         <td>{{ user.userType }}</td>
                                         <td>{{ user.number }}</td>
                                         <td>{{ user.username }}</td>
