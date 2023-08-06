@@ -17,7 +17,7 @@ import base64
 @login_required(login_url='/login/')
 def dashboard(request):
     if request.user.is_superuser:
-        allUsers=UserProfile.objects.all()
+        allUsers=UserProfile.objects.filter(is_superuser=False)
         allMessages=MessagesFor.objects.all()
         allBorders=BorderRegistration.objects.all()
         return render(request,"dashboard.html",{"allUsers":allUsers,"allMessages":allMessages,"allBorders":allBorders})
@@ -125,7 +125,7 @@ def userProfileRegister(request):
 @login_required(login_url='/login/')
 def allUserProfiles(request):
     if request.user.is_superuser:
-        allUsers=UserProfile.objects.all()
+        allUsers=UserProfile.objects.filter(is_superuser=False)
         return render(request,"user-profile/list.html",{"allUsers":allUsers})
     else:
         return redirect("/border/")
@@ -136,7 +136,7 @@ def generateRandomBorderGeneratedId():
     print( BorderRegistration.objects.exists())
     randomNum='borderId_1'
     if BorderRegistration.objects.exists():
-        'borderId_'+str(BorderRegistration.objects.last().pk+1)
+        randomNum='borderId_'+str(BorderRegistration.objects.last().pk+1)
     
     # randomNum = BorderRegistration.objects.exists()==True if 'borderId_'+str(BorderRegistration.objects.last().pk+1) else 'borderId_1'
     return randomNum
@@ -153,7 +153,7 @@ def three_month_from_today():
 def borderRegister(request):
     # myUser=UserProfile.objects.filter(theUser=request.user).first()
     if request.user.is_superuser:
-        allUsers=UserProfile.objects.all()
+        allUsers=UserProfile.objects.filter(is_superuser=False)
         theGeneratedId=generateRandomBorderGeneratedId()
         expireDate=three_month_from_today()
         return render(request,"border/register.html",{"allUsers":allUsers,"generatedUserId":theGeneratedId,"expireDate":expireDate})
@@ -187,8 +187,8 @@ def scanUserFace(request):
 def scanedUserInfo(request,pk):
     # if request.user.is_superuser:
     userInfo = UserProfile.objects.filter(pk=pk).first()
-    allBorders = BorderRegistration.objects.filter(theUser=userInfo)
-    return render(request,"info/scanned-user-info.html",{"userInfo":userInfo,"allBorders":allBorders})
+    allBorders = BorderRegistration.objects.filter(theUser=userInfo).order_by('borderCurrentState')
+    return render(request,"info/scanned-user-info.html",{"userInfo":userInfo,"allBorders":allBorders,"latestBorder":allBorders.last()})
     # else:
     #     return redirect("/border-info/")
 

@@ -60,16 +60,35 @@ class UserProfile(models.Model):
     def __str__(self) -> str:
         return str(self.fullName)
 
+
+LANDED_TYPE_CHOICES = [
+        ('By Flight', 'By Flight'),
+        ('By Train', 'By Train'),
+        ('By Bus', 'By Bus'),
+    ]
+
+BORDER_CURRENT_STATUS = [
+        ('In', 'In The Country Flight'),
+        ('Out', 'Out The Country')
+    ]
+
+NATIONALITY = [
+        ('Somalia', 'Somalia'),
+        ('Somali-Land', 'Somali-Land')
+    ]
 class BorderRegistration(models.Model):
     borderGeneratedId=models.CharField(max_length=255,default="0")
     theUser=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+    userLandedType = models.CharField(max_length=255, choices=LANDED_TYPE_CHOICES, default='By Flight')
+    borderCurrentState=models.CharField(max_length=255,choices=BORDER_CURRENT_STATUS,default='In')
     idCardNo=models.CharField(max_length=255)
+    passportID=models.CharField(max_length=255,default='PSS-D12')
     expireDate=models.DateTimeField(null=True,blank=True)
     userState=models.CharField(max_length=255)
     userAddress=models.CharField(max_length=555)
     enteringDate=models.DateTimeField()
-    nationality=models.CharField(max_length=255)
-    fingerPrintCD=models.CharField(max_length=10000,default='')
+    nationality=models.CharField(max_length=255,choices=NATIONALITY,default='Somalia')
+    # fingerPrintCD=models.CharField(max_length=10000,default='')
     registrationDate=models.DateTimeField(auto_now=True)
     userProducts=models.ManyToManyField(Product,null=True,blank=True)   
 

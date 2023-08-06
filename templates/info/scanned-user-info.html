@@ -29,6 +29,18 @@
                 </ul>
             </div>
         </div> -->
+        <div class="page-header card">
+            <!-- Rest of your HTML code -->
+        </div>
+
+        <div class="pcoded-inner-content">
+            <!-- Rest of your HTML code -->
+        </div>
+        <div class="col-xl-12 col-md-12">
+            <div class="card latest-update-card">
+                <div id="countdown-timer" style="font-size: 40px;font-weight: bold;" class="p-4"></div>
+            </div>
+        </div>
         <div class="col-xl-12 col-md-12">
             <div class="card latest-update-card">
                 <div class="card-header">
@@ -78,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-                 
+
 
 
                 </div>
@@ -106,12 +118,15 @@
                                     <tr>
                                         <th>B-Generated ID</th>
                                         <th>ID Card No</th>
+                                        <th>Current-Status</th>
                                         <th>Expire Date</th>
                                         <th>User State</th>
                                         <th>User Address</th>
                                         <th>Entering Date</th>
                                         <th>Nationality</th>
+                                        <th>Landed Type</th>
                                         <th>Registration Date</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -119,12 +134,25 @@
                                     <tr>
                                         <td>{{ border.borderGeneratedId }}</td>
                                         <td>{{ border.idCardNo }}</td>
-                                        <td>{{ border.expireDate }}</td>
+                                        <td>{{ border.borderCurrentState }}</td>
+                                        <td style="color:red">{{ border.expireDate }}</td>
                                         <td>{{ border.userState }}</td>
                                         <td>{{ border.userAddress }}</td>
                                         <td>{{ border.enteringDate }}</td>
                                         <td>{{ border.nationality }}</td>
+                                        <td>{{ border.userLandedType }}</td>
                                         <td>{{ border.registrationDate }}</td>
+                                        <td>
+                                            <a target="_blank"
+                                                href='/admin/api/borderregistration/{{border.id}}/change/'
+                                                class="btn btn-primary btn-sm edit-user">Edit</a>
+                                            <a target="_blank"
+                                                href="/admin/api/borderregistration/{{border.id}}/change/"
+                                                class="btn btn-info btn-sm">Detail</a>
+                                            <a target="_blank"
+                                                href="/admin/api/borderregistration/{{border.id}}/delete/"
+                                                class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
                                         <!-- <td>
                                             {% for product in border.userProducts.all %}
                                             {{ product.name }}{% if not forloop.last %}, {% endif %}
@@ -153,5 +181,40 @@
     <div id="styleSelector">
     </div>
 </div>
+<script>
+    // Get the expiration date from the server-side and convert it to JavaScript Date object
+    var expirationDate = new Date(2023, 9, 9, 12, 1, 0);
 
+    console.log('{{latestBorder.expireDate}}')
+    // Function to update the countdown timer
+    function updateCountdown() {
+        var now = new Date(); // Get the current date and time
+
+        // Calculate the remaining time in milliseconds
+        var remainingTime = expirationDate.getTime() - now.getTime();
+
+        if (remainingTime <= 0) {
+            // If the expiration date has passed
+            document.getElementById("countdown-timer").textContent = "Expired";
+        } else {
+            // Calculate the remaining days, hours, minutes, and seconds
+            var days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+            // Format the countdown timer as "X days, XX:XX:XX"
+            var timerText = days + " DAYS,  " + formatTime(hours) + " : " + formatTime(minutes) + " : " + formatTime(seconds);
+            document.getElementById("countdown-timer").textContent = timerText;
+        }
+    }
+
+    // Helper function to format the time with leading zeros
+    function formatTime(time) {
+        return time.toString().padStart(2, "0");
+    }
+
+    // Update the countdown timer every second
+    setInterval(updateCountdown, 1000);
+</script>
 {% endblock %}

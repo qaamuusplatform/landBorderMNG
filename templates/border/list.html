@@ -22,11 +22,12 @@
                                 <thead>
                                     <tr>
                                         <th>B-Generated ID</th>
+                                        <th>CurrentStatus</th>
                                         <th>ID Card No</th>
                                         <th>Name</th>
                                         <th>Expire Date</th>
                                         <th>User State</th>
-                                        <th>User Address</th>
+                                        <th>LandedType</th>
                                         <th>Entering Date</th>
                                         <th>Nationality</th>
                                         <th>Registration Date</th>
@@ -37,11 +38,12 @@
                                     {% for border in allBorders %}
                                     <tr>
                                         <td>{{ border.borderGeneratedId }}</td>
+                                        <td>{{border.borderCurrentState}}</td>
                                         <td>{{ border.idCardNo }}</td>
                                         <td>{{ border.theUser.fullName }}</td>
                                         <td style="color: red;">{{ border.expireDate }}</td>
                                         <td>{{ border.userState }}</td>
-                                        <td>{{ border.userAddress }}</td>
+                                        <td>{{ border.userLandedType }}</td>
                                         <td>{{ border.enteringDate }}</td>
                                         <td>{{ border.nationality }}</td>
                                         <td>{{ border.registrationDate }}</td>
@@ -62,15 +64,15 @@
                                 <tfoot>
                                     <tr>
                                         <th>B-Generated ID</th>
+                                        <th>CurrentStatus</th>
                                         <th>ID Card No</th>
                                         <th>Name</th>
                                         <th>Expire Date</th>
                                         <th>User State</th>
-                                        <th>User Address</th>
+                                        <th>LandedType</th>
                                         <th>Entering Date</th>
                                         <th>Nationality</th>
                                         <th>Registration Date</th>
-                                        <!-- <th>User Products</th> -->
                                         <th width="10px">Action</th>
                                     </tr>
                                 </tfoot>
