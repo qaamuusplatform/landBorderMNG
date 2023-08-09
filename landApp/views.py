@@ -188,7 +188,8 @@ def scanedUserInfo(request,pk):
     # if request.user.is_superuser:
     userInfo = UserProfile.objects.filter(pk=pk).first()
     allBorders = BorderRegistration.objects.filter(theUser=userInfo).order_by('borderCurrentState')
-    return render(request,"info/scanned-user-info.html",{"userInfo":userInfo,"allBorders":allBorders,"latestBorder":allBorders.last()})
+    allMessages=MessagesFor.objects.filter(theUser=userInfo).order_by('date')
+    return render(request,"info/scanned-user-info.html",{"allMessages":allMessages,"userInfo":userInfo,"allBorders":allBorders,"latestBorder":allBorders.last()})
     # else:
     #     return redirect("/border-info/")
 

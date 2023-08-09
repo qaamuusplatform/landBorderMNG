@@ -96,7 +96,7 @@
                                         <label class="col-sm-2 col-form-label">Profile Image</label>
                                         <div class="col-sm-10">
                                             <input type="file" class="form-control-file" required name="profileImage"
-                                                id="profileImage">
+                                                id="profileImage" accept="image/png, image/gif, image/jpeg" />
                                             <span class="messages"></span>
                                         </div>
                                     </div>
@@ -139,7 +139,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2"></label>
                                         <div class="col-sm-10">
-                                            <button type="submit" class="btn btn-primary m-b-0">Submit </button>
+                                            <button type="submit" id="submitButton" class="btn btn-primary m-b-0">Submit </button>
                                         </div>
                                     </div>
                                 </form>
@@ -261,7 +261,7 @@
     // }
 
     const form = document.querySelector('#main');
-    const submitButton = form.querySelector('button[type="submit"]');
+    const submitButton = document.getElementById("submitButton");
 
 
     form.addEventListener('submit', (event) => {
