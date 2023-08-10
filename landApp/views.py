@@ -178,7 +178,7 @@ def allBorder(request):
 # @login_required(login_url='/login/')
 def scanUserFace(request):
     # if request.user.is_superuser:
-    allUsers=UserProfile.objects.all()
+    allUsers=UserProfile.objects.filter(is_superuser=False)
     return render(request,"info/scan-user-face.html",{"allUsers":allUsers})
     # else:
     #     return redirect("/border-info/")
