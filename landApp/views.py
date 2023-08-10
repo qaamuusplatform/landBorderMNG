@@ -260,7 +260,8 @@ def messageInfo(request):
 
 # report
 def reportList(request):
-    allReport = ReportInfo.objects.all()
+    allReport = ReportInfo.objects.order_by('-pk').all()
+    print(allReport.first().pk)
     return render(request,"report/list.html",{"allReport":allReport})
 
 

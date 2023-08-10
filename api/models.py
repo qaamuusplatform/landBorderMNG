@@ -93,7 +93,19 @@ class BorderRegistration(models.Model):
     userProducts=models.ManyToManyField(Product,null=True,blank=True)   
 
     def save(self,*args,**kwargs):
-        ReportInfo.objects.create(reportTitle=f'New border was registred to this {self.theUser.fullName}',desc=f'message was sended {self.idCardNo}')
+        oldObjectData=BorderRegistration.objects.get(pk=self.pk)
+        if self._state.adding:
+            ReportInfo.objects.create(reportTitle='New border was registred',desc=f'New border was registred to this {self.theUser.fullName}')
+        else: 
+            if oldObjectData.borderCurrentState==self.borderCurrentState:
+                if oldObjectData.expireDate!=self.expireDate:
+                    ReportInfo.objects.create(reportTitle='Expire date changing',desc=f'The border {self.theUser.fullName} was change to his expire date to {self.expireDate}')
+
+            else:
+                if oldObjectData.expireDate!=self.expireDate:
+                    ReportInfo.objects.create(reportTitle='Expire date changing',desc=f'The border {self.theUser.fullName} was change to his expire date to {self.expireDate}')
+                ReportInfo.objects.create(reportTitle='The border current state was changed',desc=f'The border {self.theUser.fullName} was change to his state to {self.borderCurrentState}')
+
         # self.save()
         return super().save()
     def __str__(self) -> str:
