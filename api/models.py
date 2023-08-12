@@ -72,6 +72,12 @@ BORDER_CURRENT_STATUS = [
         ('Out', 'Out The Country')
     ]
 
+REASONS = [
+        ('Medical', 'Medical'),
+        ('Tourisim', 'Tourisim'),
+        ('Education', 'Education')
+    ]
+
 NATIONALITY = [
         ('Somalia', 'Somalia'),
         ('Somali-Land', 'Somali-Land')
@@ -84,13 +90,14 @@ class BorderRegistration(models.Model):
     idCardNo=models.CharField(max_length=255)
     passportID=models.CharField(max_length=255,default='PSS-D12')
     expireDate=models.DateTimeField(null=True,blank=True)
-    userState=models.CharField(max_length=255)
     userAddress=models.CharField(max_length=555)
     enteringDate=models.DateTimeField()
     nationality=models.CharField(max_length=255,choices=NATIONALITY,default='Somalia')
     # fingerPrintCD=models.CharField(max_length=10000,default='')
     registrationDate=models.DateTimeField(auto_now=True)
     userProducts=models.ManyToManyField(Product,null=True,blank=True)   
+    
+    reasonFor=models.CharField(max_length=255,choices=REASONS,default='Education')
 
     def save(self,*args,**kwargs):
         if self._state.adding:
