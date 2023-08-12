@@ -105,18 +105,18 @@
                                 <tbody>
 
                                     {% for user in allUsers %}
-                                    <tr onclick='location.href="/scaned-user-info/{{user.id}}/"' >
-                                        <td>{{ user.id }}</td>
-                                        <td style="font-weight: bold;">{{ user.fullName }}</td>
-                                        <td>
+                                    <tr  >
+                                        <td onclick='location.href="/scaned-user-info/{{user.id}}/"'>{{ user.id }}</td>
+                                        <td onclick='location.href="/scaned-user-info/{{user.id}}/"' style="font-weight: bold;">{{ user.fullName }}</td>
+                                        <td onclick='location.href="/scaned-user-info/{{user.id}}/"'>
                                             {%if user.profileImage %}
                                             <img src="{{ user.profileImage.url }}" alt="{{ user.fullName }}"
                                                 width="100">
                                             {% endif %}
                                         </td>
-                                        <td>{{ user.userType }}</td>
-                                        <td>{{ user.number }}</td>
-                                        <td>{{ user.username }}</td>
+                                        <td onclick='location.href="/scaned-user-info/{{user.id}}/"'>{{ user.userType }}</td>
+                                        <td onclick='location.href="/scaned-user-info/{{user.id}}/"'>{{ user.number }}</td>
+                                        <td onclick='location.href="/scaned-user-info/{{user.id}}/"'>{{ user.username }}</td>
                                         <td>
                                             <a target="_blank" href='/admin/api/userprofile/{{user.id}}/change/' class="btn btn-primary btn-sm edit-user">Edit</a>
                                             <a target="_blank" href="/admin/api/userprofile/{{user.id}}/change/" class="btn btn-info btn-sm">Detail</a>
