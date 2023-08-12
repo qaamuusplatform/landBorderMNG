@@ -93,10 +93,11 @@ class BorderRegistration(models.Model):
     userProducts=models.ManyToManyField(Product,null=True,blank=True)   
 
     def save(self,*args,**kwargs):
-        oldObjectData=BorderRegistration.objects.get(pk=self.pk)
         if self._state.adding:
             ReportInfo.objects.create(reportTitle='New border was registred',desc=f'New border was registred to this {self.theUser.fullName}')
         else: 
+        
+            oldObjectData=BorderRegistration.objects.get(pk=self.pk)
             if oldObjectData.borderCurrentState==self.borderCurrentState:
                 if oldObjectData.expireDate!=self.expireDate:
                     ReportInfo.objects.create(reportTitle='Expire date changing',desc=f'The border {self.theUser.fullName} was change to his expire date to {self.expireDate}')
