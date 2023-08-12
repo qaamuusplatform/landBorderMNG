@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser,User
 from django.utils.safestring import mark_safe
 
+from datetime import timedelta,datetime
+
 # Create your models here.
 class Product(models.Model):
     productName=models.CharField(max_length=255)
@@ -80,22 +82,27 @@ REASONS = [
 
 NATIONALITY = [
         ('Somalia', 'Somalia'),
-        ('Somali-Land', 'Somali-Land')
+        ('Somali-Land', 'Somali-Land'),
+        ('Kenya', 'Kenya '),
+        ('Angola', 'Angola'),
+        ('Italy', 'Italy'),
     ]
+def three_month_from_today():
+    return datetime.now() + timedelta(days=60)   
+
 class BorderRegistration(models.Model):
     borderGeneratedId=models.CharField(max_length=255,default="0")
     theUser=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
     userLandedType = models.CharField(max_length=255, choices=LANDED_TYPE_CHOICES, default='By Flight')
     borderCurrentState=models.CharField(max_length=255,choices=BORDER_CURRENT_STATUS,default='In')
+    enteringDate=models.DateTimeField()
     idCardNo=models.CharField(max_length=255)
     passportID=models.CharField(max_length=255,default='PSS-D12')
-    expireDate=models.DateTimeField(null=True,blank=True)
+    expireDate=models.DateTimeField(null=True,blank=True,default=three_month_from_today)
     userAddress=models.CharField(max_length=555)
-    enteringDate=models.DateTimeField()
     nationality=models.CharField(max_length=255,choices=NATIONALITY,default='Somalia')
     # fingerPrintCD=models.CharField(max_length=10000,default='')
-    registrationDate=models.DateTimeField(auto_now=True)
-    userProducts=models.ManyToManyField(Product,null=True,blank=True)   
+    registrationDate=models.DateTimeField(auto_now=True) 
     
     reasonFor=models.CharField(max_length=255,choices=REASONS,default='Education')
 

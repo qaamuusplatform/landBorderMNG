@@ -18,7 +18,7 @@ from . models import *
 
 # @admin.register(BorderRegistration)
 # class BorderRegistrationAdmin(admin.ModelAdmin):
-#     list_display=('theUser','idCardNo','userState','userAddress','enteringDate','nationality','expireDate','fingerPrintCD')
+#     list_display=('theUser','idCardNo','reasonFor','userAddress','enteringDate','nationality','expireDate','fingerPrintCD')
 #     # ordering: 
 #     search_fields=('fingerPrintCD','nationality','userAddress')
 
