@@ -101,16 +101,25 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="expireDate">Expiration Date</label>
-                                        <input  value="{{expireDate|date:'m-d-Y H:i'}}" disabled class="form-control" name="expireDate"
-                                            id="expireDate">
+                                        <input value="{{expireDate|date:'m-d-Y H:i'}}" disabled class="form-control"
+                                            name="expireDate" id="expireDate">
                                     </div>
                                     <div class="form-group">
                                         <label for="userLandedType">User Landed Type</label>
                                         <select name="userLandedType" id="userLandedType" class="form-control" required>
-
+                                            <option value="">Choose landing Type</option>
                                             <option value="By Flight">By Flight</option>
                                             <option value="By Train">By Train</option>
                                             <option value="By Bus">By Bus</option>
+                                            <!-- Add more options if needed -->
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group" id="flightDropdown" style="display: none;padding-left: 40px;">
+                                        <label for="theFlight">Choose The Flight</label>
+                                        <select name="theFlight" id="theFlight" class="form-control" required>
+                                            <option value="Qatar Airways">Qatar Airways</option>
+                                            <option value="Kenya Airways">Kenya Airways</option>
                                             <!-- Add more options if needed -->
                                         </select>
                                     </div>
@@ -138,7 +147,17 @@
 
     const form = document.querySelector('#main');
     const submitButton = form.querySelector('button[type="submit"]');
+    const userLandedTypeDropdown = document.getElementById("userLandedType");
+    const flightDropdown = document.getElementById("flightDropdown");
 
+    userLandedTypeDropdown.addEventListener("change", function () {
+        if (this.value === "By Flight") {
+            flightDropdown.style.display = "block";
+            flightDropdown.style.paddingLeft='40px';
+        } else {
+            flightDropdown.style.display = "none";
+        }
+    });
 
     form.addEventListener('submit', (event) => {
         event.preventDefault();

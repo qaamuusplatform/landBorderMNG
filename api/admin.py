@@ -38,3 +38,4 @@ class ReportInfoAdmin(admin.ModelAdmin):
     search_fields=('reportTitle','desc','datetime')
 
 admin.site.register(Fines)
+admin.site.register(ExtraTime)
