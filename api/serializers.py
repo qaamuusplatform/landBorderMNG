@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import UserProfile,BorderRegistration,MessagesFor,ScannedFaceDt,FingerPrintScanDt
+from .models import *
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ('id', 'username','faceDetected','fullName', 'profileImage', 'userType', 'number', 'status')
+        fields = ('id', 'username','faceDetected','fullName', 'profileImage','passportID', 'userType', 'number', 'status')
 
 
 class ScannedFaceDtSerializer(serializers.ModelSerializer):
@@ -23,7 +23,15 @@ class MessagesForSerializer(serializers.ModelSerializer):
         model = MessagesFor
         fields = '__all__'
 
+class FinesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fines
+        fields = '__all__'
 
+class ExtraTimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExtraTime
+        fields = '__all__'
 
 class FingerPrintScanDtSerializer(serializers.ModelSerializer):
     class Meta:

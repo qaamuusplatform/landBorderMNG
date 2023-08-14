@@ -19,6 +19,17 @@ urlpatterns = [
     path('border-register/',views.borderRegister),
     path('all-border/',views.allBorder),
 
+    
+    path('fine-register/',views.fineRegister),
+    path('all-fines/',views.allFines),
+
+    
+    
+    path('extra-register/',views.extraRegister),
+    path('all-extras/',views.allExtras),
+
+
+
 
     # information
     path('scan-user-face/',views.scanUserFace),

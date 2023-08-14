@@ -160,8 +160,6 @@ def borderRegister(request):
     else:
         return redirect("/border/")
     
-
-
 @login_required(login_url='/login/')
 def allBorder(request):
     if request.user.is_superuser:
@@ -169,6 +167,56 @@ def allBorder(request):
         return render(request,"border/list.html",{"allBorders":allBorders})
     else:
         return redirect("/border/")
+
+
+
+
+
+
+@login_required(login_url='/login/')
+def fineRegister(request):
+    # myUser=UserProfile.objects.filter(theUser=request.user).first()
+    if request.user.is_superuser:
+        allUsers=UserProfile.objects.filter(is_superuser=False)
+        return render(request,"fines/register.html",{"allUsers":allUsers})
+    else:
+        return redirect("/border/")
+    
+@login_required(login_url='/login/')
+def allFines(request):
+    if request.user.is_superuser:
+        allFines=Fines.objects.all()
+        print(allFines)
+        return render(request,"fines/list.html",{"allFines":allFines})
+    else:
+        return redirect("/border/")
+
+
+
+
+
+@login_required(login_url='/login/')
+def extraRegister(request):
+    # myUser=UserProfile.objects.filter(theUser=request.user).first()
+    if request.user.is_superuser:
+        allUsers=[]
+        users=UserProfile.objects.filter(is_superuser=False)
+        for crUser in users:
+            if BorderRegistration.objects.filter(theUser=crUser).exists():
+                allUsers.append(crUser)
+        return render(request,"extraTime/register.html",{"allUsers":allUsers})
+    else:
+        return redirect("/border/")
+    
+@login_required(login_url='/login/')
+def allExtras(request):
+    if request.user.is_superuser:
+        allExtras=ExtraTime.objects.all()
+        return render(request,"extraTime/list.html",{"allExtras":allExtras})
+    else:
+        return redirect("/border/")
+
+
 
 
 

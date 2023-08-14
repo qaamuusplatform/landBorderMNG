@@ -6,6 +6,7 @@
         max-width: 100%;
         max-height: 100%;
     }
+
     #scanned-finger-preview img {
         max-width: 100%;
         max-height: 100%;
@@ -61,7 +62,7 @@
                                             <!-- <button type="button" class="btn btn-danger sm" disabled>delete</button> -->
                                         </div>
 
-                                         <!-- <div class="col-sm-4">
+                                        <!-- <div class="col-sm-4">
                                             <div id="scanned-finger-preview"
                                                 style="border: 1px solid grey;width: 150px;height: 150px;margin-bottom: 5px;">
 
@@ -83,6 +84,15 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">passportID</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="passportID" required id="passportID"
+                                                placeholder="Enter your Passport ">
+                                            <span class="messages"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Gender</label>
                                         <div class="col-sm-10">
                                             <select name="gender" class="form-control" required>
@@ -95,61 +105,63 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Profile Image</label>
                                         <div class="col-sm-10">
-                                            <input type="file" class="form-control-file" required name="profileImage"
+                                            <input type="file" class="form-control-file" name="profileImage"
                                                 id="profileImage" accept="image/png, image/gif, image/jpeg" />
                                             <span class="messages"></span>
                                         </div>
                                     </div>
-                                  
-                                          
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">User Type</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" disabled name="userType"
-                                                value="Normal User" id="userType" placeholder="Enter your user type">
-                                            <span class="messages"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Number</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="number" required id="number"
-                                                placeholder="Enter your number">
-                                            <span class="messages"></span>
-                                        </div>
-                                    </div>
 
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Password</label>
-                                        <div class="col-sm-10">
-                                            <input type="password" class="form-control" name="password" required
-                                                id="password" placeholder="Enter your password">
-                                            <span class="messages"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Username</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="username" required
-                                                id="username" placeholder="Enter your username">
-                                            <span class="messages"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2"></label>
-                                        <div class="col-sm-10">
-                                            <button type="submit" id="submitButton" class="btn btn-primary m-b-0">Submit </button>
-                                        </div>
-                                    </div>
-                                </form>
+
                             </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">User Type</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" disabled name="userType" value="Normal User"
+                                        id="userType" placeholder="Enter your user type">
+                                    <span class="messages"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Number</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="number" required id="number"
+                                        placeholder="Enter your number">
+                                    <span class="messages"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Username</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="username" required id="username"
+                                        placeholder="Enter your username" autocomplete="off">
+                                    <span class="messages"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" name="password" required id="password"
+                                        placeholder="Enter your password" autocomplete="off">
+                                    <span class="messages"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" id="submitButton" class="btn btn-primary m-b-0">Submit
+                                    </button>
+                                </div>
+                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <script>
     function takeFacePhote() {
@@ -228,7 +240,7 @@
     //     scanGifDiv.innerHTML=''
     //     // Create a new img element to display the image
     //     const gifImg = document.createElement('img');
-        
+
     //     gifImg.src = '/static/gif/scanning.gif';
     //     scanGifDiv.appendChild(gifImg);
 
@@ -268,39 +280,85 @@
         event.preventDefault();
 
         const formData = new FormData(form);
-        formData.append('faceDetected', cropedFaceDetected, cropedFaceDetected.name);
-        // Disable submit button and show spinner
-        submitButton.disabled = true;
-        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
-        fetch('/api/user-profile/', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                // Show success message using SweetAlert
-                swal({
-                    title: 'Success!',
-                    text: 'Your form has been submitted successfully.',
-                    icon: 'success'
-                });
-                location.reload()
+        try {
+            formData.append('faceDetected', cropedFaceDetected, cropedFaceDetected.name);
+            fetch('/api/user-profile/', {
+                method: 'POST',
+                body: formData
             })
-            .catch(error => {
-                console.error(error);
-                // Show error message using SweetAlert
-                swal({
-                    title: 'Error!',
-                    text: 'There was an error submitting your form. Please try again later.',
-                    icon: 'error'
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    console.log(data.passportID)
+                    console.log(data.username)
+                    if (data.id) {
+                        swal({
+                            title: 'Success!',
+                            text: 'Your form has been submitted successfully.',
+                            icon: 'success'
+                        });
+                        // location.reload()
+                        
+                    }else{
+                        if (data.passportID)  {
+                        swal({
+                            title: 'PassportID id already exist!',
+                            text: 'There was an error creating the userprofile. Please try again later.',
+                            icon: 'error'
+                        });
+                        
+                    } else if (data.username) {
+                        swal({
+                            title: 'Username alredy exist!',
+                            text: 'There was an error creating the userprofile. Please try again later.',
+                            icon: 'error'
+                        });
+                    } else {
+                        swal({
+                            title: 'Success!',
+                            text: 'Your form has been submitted successfully.',
+                            icon: 'success'
+                        });
+                        // location.reload()
+                    }
+                    }
+                    
+                    // Show success message using SweetAlert
+
+                })
+                .catch(error => {
+                    console.error(error);
+                    // Show error message using SweetAlert
+                    swal({
+                        title: 'Error!',
+                        text: 'There was an error submitting your form. Please try again later.',
+                        icon: 'error'
+                    });
+                })
+                .finally(() => {
+                    // Enable submit button and reset text
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = 'Submit';
                 });
-            })
-            .finally(() => {
-                // Enable submit button and reset text
-                submitButton.disabled = false;
-                submitButton.innerHTML = 'Submit';
+
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+        } catch (error) {
+            console.log(error)
+            swal({
+                title: 'Scan Face!',
+                text: 'you need to scan the user face.',
+                icon: 'error'
             });
+
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Submit';
+        }
+
+        submitButton.disabled = false;
+        submitButton.innerHTML = 'Submit';
+        // Disable submit button and show spinner
+
     });
 
 </script>

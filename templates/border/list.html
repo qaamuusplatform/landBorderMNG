@@ -47,11 +47,7 @@
                                         <td>{{ border.userLandedType }}</td>
                                         <td>{{ border.enteringDate }}</td>
                                         <td>{{ border.nationality }}</td>
-                                        <!-- <td>
-                                            {% for product in border.userProducts.all %}
-                                            {{ product.name }}{% if not forloop.last %}, {% endif %}
-                                            {% endfor %}
-                                        </td> -->
+                                  
                                             <td>
                                                 <a target="_blank" href='/admin/api/borderregistration/{{border.id}}/change/' class="btn btn-primary btn-sm edit-user">Edit</a>
                                                 <a target="_blank" href="/admin/api/borderregistration/{{border.id}}/change/" class="btn btn-info btn-sm">Detail</a>

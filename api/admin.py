@@ -37,3 +37,4 @@ class ReportInfoAdmin(admin.ModelAdmin):
     # ordering: 
     search_fields=('reportTitle','desc','datetime')
 
+admin.site.register(Fines)

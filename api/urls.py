@@ -16,6 +16,14 @@ urlpatterns = [
 
 
     
+    path('fines/', FinesListCreate.as_view(), name='fines-register'),
+    path('fines/<int:pk>/', FinesDetailDelete.as_view(), name='fines-detail'),
+    
+    path('extras/', ExtrasListCreate.as_view(), name='extra-time'),
+    path('extras/<int:pk>/', ExtrasDetailDelete.as_view(), name='extra-time-detail'),
+
+
+    
     path('scanned-face/', ScannedFaceListCreate.as_view(), name='scanned-face'),
     path('scanned-face/<int:pk>/', ScannedFaceDetailDelete.as_view(), name='scanned-face'),
 

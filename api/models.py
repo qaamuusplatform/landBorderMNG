@@ -20,6 +20,7 @@ class UserProfile(models.Model):
     password=models.CharField(max_length=255,default='12345')
     is_superuser=models.BooleanField(default=False)
     theUser=models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
+    passportID=models.CharField(max_length=255,unique=True)
     fullName=models.CharField(max_length=255,default="")
     gender=models.CharField(max_length=255,default='Male')
     faceDetected=models.FileField(upload_to='usersFaceDetected/',null=True,blank=True)
@@ -97,7 +98,6 @@ class BorderRegistration(models.Model):
     borderCurrentState=models.CharField(max_length=255,choices=BORDER_CURRENT_STATUS,default='In')
     enteringDate=models.DateTimeField()
     idCardNo=models.CharField(max_length=255)
-    passportID=models.CharField(max_length=255,default='PSS-D12')
     expireDate=models.DateTimeField(null=True,blank=True,default=three_month_from_today)
     userAddress=models.CharField(max_length=555)
     nationality=models.CharField(max_length=255,choices=NATIONALITY,default='Somalia')
@@ -162,3 +162,39 @@ class ScannedFaceDt(models.Model):
 class FingerPrintScanDt(models.Model):
     fingerPrintCode=models.TextField(null=True,blank=True)
     fingerPrintImage=models.FileField(upload_to='scannedFingers/', null=True, blank=True, default='fingerprint.jpg')
+
+
+
+class Fines(models.Model):
+    theUser=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+    fineTitle=models.CharField(max_length=255)
+    fineDesc=models.TextField()
+    finePrice=models.IntegerField(default=20)
+    datetime=models.DateTimeField(auto_now=True)
+    fixed=models.BooleanField(default=False)
+
+    def save(self,*args,**kwargs):
+        if self._state.adding:
+            ReportInfo.objects.create(reportTitle=f'New fine for this border {self.theUser.fullName}',desc=f'{self.fineTitle} - {self.finePrice}')
+        else: 
+            if self.fixed:
+                ReportInfo.objects.create(reportTitle=f'The fine for this border {self.theUser.fullName} was fixed',desc=f'{self.fineTitle} - {self.finePrice}')
+        return super().save()
+
+
+class ExtraTime(models.Model):
+    theUser=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+    borderingSt=models.ForeignKey(BorderRegistration,on_delete=models.CASCADE,null=True,blank=True)
+    price=models.IntegerField(default=50)
+    extraDays=models.IntegerField(default=15)
+    reasonForExtraDays=models.CharField(max_length=2555)
+    datetime=models.DateTimeField(auto_now=True)
+
+    def save(self,*args,**kwargs):
+        if self._state.adding:
+            latestBordering=BorderRegistration.objects.filter(theUser=self.theUser).last()
+            self.borderingSt=latestBordering
+            latestBordering.expireDate=latestBordering.expireDate+timedelta(days=self.extraDays)
+            latestBordering.save()
+            ReportInfo.objects.create(reportTitle=f'Extra Days for this border {self.theUser.fullName}',desc=f'This user requested {self.extraDays} days  for this reason {self.reasonForExtraDays} and also he/she paided the price {self.price}')
+        return super().save()

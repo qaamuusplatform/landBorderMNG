@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="pcoded-inner-content">
+
+    <div class="main-body">
+        <div class="page-wrapper">
+
+            <div class="page-body">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Fines</h5>
+                        <span>Manage fines for users</span>
+                    </div>
+                    <div class="card-block">
+                        <div class="table-responsive dt-responsive">
+                            <table id="dom-jqry" class="table table-striped table-bordered nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th>Fixed</th>
+                                        <th width="10px">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for fine in allFines %}
+                                    <tr>
+                                        <td>{{ fine.theUser.fullName }}</td>
+                                        <td>{{ fine.fineTitle }}</td>
+                                        <td>{{ fine.fineDesc }}</td>
+                                        <td>$ <strong>{{ fine.finePrice }}</strong></td>
+                                        <td>{{ fine.fixed }}</td>
+                                        <td>
+                                            <a target="_blank" href='/admin/api/fines/{{ fine.id }}/change/' class="btn btn-primary btn-sm edit-fine">Edit</a>
+                                            <a target="_blank" href="/admin/api/fines/{{ fine.id }}/change/" class="btn btn-info btn-sm">Detail</a>
+                                            <a target="_blank" href="/admin/api/fines/{{ fine.id }}/delete/" class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th>Fixed</th>
+                                        <th width="10px">Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="styleSelector">
+    </div>
+</div>
+{% endblock %}
