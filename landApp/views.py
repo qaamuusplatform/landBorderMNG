@@ -237,7 +237,9 @@ def scanedUserInfo(request,pk):
     userInfo = UserProfile.objects.filter(pk=pk).first()
     allBorders = BorderRegistration.objects.filter(theUser=userInfo).order_by('borderCurrentState')
     allMessages=MessagesFor.objects.filter(theUser=userInfo).order_by('date')
-    return render(request,"info/scanned-user-info.html",{"allMessages":allMessages,"userInfo":userInfo,"allBorders":allBorders,"latestBorder":allBorders.last()})
+    allFines=Fines.objects.filter(theUser=userInfo)
+    allExtras=ExtraTime.objects.filter(theUser=userInfo)
+    return render(request,"info/scanned-user-info.html",{"allExtras":allExtras,"allFines":allFines,"allMessages":allMessages,"userInfo":userInfo,"allBorders":allBorders,"latestBorder":allBorders.last()})
     # else:
     #     return redirect("/border-info/")
 

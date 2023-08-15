@@ -82,6 +82,16 @@
                                             <option value="Etheiobia">Etheiobia</option> -->
                                         </select>
                                     </div>
+                                    <div class="form-group" style="display: none;padding-left: 40px;">
+                                        <label for="subTypeLand">Choose The Visa</label>
+                                        <select name="subTypeLand" id="subTypeLand" class="form-control" >
+                                            <option value="Visa_2Month__$150">Visa_2Month__($150)</option>
+                                            <option value="Visa_4Month__$300">Visa_4Month__($300)</option>
+                                            <option value="Visa_6Month__$450">Visa_6Month__($450)</option>
+                                            <option value="Visa_12Month_$1000">Visa_12Month_($1000)</option>
+                                            <!-- Add more options if needed -->
+                                        </select>
+                                    </div>
                                     <div class="form-group">
                                         <label for="userAddress">Address</label>
                                         <input type="text" class="form-control" name="userAddress" id="userAddress"
@@ -104,6 +114,7 @@
                                         <input value="{{expireDate|date:'m-d-Y H:i'}}" disabled class="form-control"
                                             name="expireDate" id="expireDate">
                                     </div>
+
                                     <div class="form-group">
                                         <label for="userLandedType">User Landed Type</label>
                                         <select name="userLandedType" id="userLandedType" class="form-control" required>
@@ -116,12 +127,24 @@
                                     </div>
                                     
                                     <div class="form-group" id="flightDropdown" style="display: none;padding-left: 40px;">
-                                        <label for="theFlight">Choose The Flight</label>
-                                        <select name="theFlight" id="theFlight" class="form-control" required>
+                                        <label for="subTypeLand">Choose The Flight</label>
+                                        <select name="subTypeLand" id="subTypeLand" class="form-control" >
                                             <option value="Qatar Airways">Qatar Airways</option>
+                                            <option value="Kenya Airways">Kenya Airways</option>
+                                            <option value="Franch Airways">Franch Airways</option>
                                             <option value="Kenya Airways">Kenya Airways</option>
                                             <!-- Add more options if needed -->
                                         </select>
+                                    </div>
+                                    <div class="form-group" id="trainDropdown" style="display: none;padding-left: 40px;">
+                                        <label for="subTypeLand">Train ID</label>
+                                        <input type="text" class="form-control" name="subTypeLand" id="subTypeLand"
+                                            placeholder="Enter Train ID">
+                                    </div>
+                                    <div class="form-group" id="busDropdown" style="display: none;padding-left: 40px;">
+                                        <label for="bus">Bus Targo</label>
+                                        <input type="text" class="form-control" name="subTypeLand" id="subTypeLand"
+                                            placeholder="Enter Bus Targo">
                                     </div>
                                     <div class="form-group">
                                         <label for="borderCurrentState">Border Current State</label>
@@ -149,13 +172,35 @@
     const submitButton = form.querySelector('button[type="submit"]');
     const userLandedTypeDropdown = document.getElementById("userLandedType");
     const flightDropdown = document.getElementById("flightDropdown");
+    const trainDropdown = document.getElementById("trainDropdown");
+    const busDropdown = document.getElementById("busDropdown");
 
     userLandedTypeDropdown.addEventListener("change", function () {
         if (this.value === "By Flight") {
+            busDropdown.style.display = "none";
+            trainDropdown.style.display = "none";
             flightDropdown.style.display = "block";
             flightDropdown.style.paddingLeft='40px';
-        } else {
+
+
+
+
+        } else if(this.value ==="By Train"){
             flightDropdown.style.display = "none";
+            busDropdown.style.display = "none";
+            trainDropdown.style.display = "block";
+            trainDropdown.style.paddingLeft='40px';
+
+
+        } else if(this.value ==="By Bus"){
+            flightDropdown.style.display = "none";
+            trainDropdown.style.display = "none";
+            busDropdown.style.display = "block";
+            busDropdown.style.paddingLeft='40px';
+        } else {
+            busDropdown.style.display = "none";
+            flightDropdown.style.display = "none";
+            trainDropdown.style.display = "none";
         }
     });
 
