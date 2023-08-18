@@ -98,6 +98,7 @@
                                         <th>Profile Image</th>
                                         <th>User Type</th>
                                         <th>Number</th>
+                                        <th>Passport</th>
                                         <th>Username</th>
                                         <th width="10px">action</th>
                                     </tr>
@@ -116,6 +117,7 @@
                                         </td>
                                         <td onclick='location.href="/scaned-user-info/{{user.id}}/"'>{{ user.userType }}</td>
                                         <td onclick='location.href="/scaned-user-info/{{user.id}}/"'>{{ user.number }}</td>
+                                        <td onclick='location.href="/scaned-user-info/{{user.id}}/"'>{{ user.passportID }}</td>
                                         <td onclick='location.href="/scaned-user-info/{{user.id}}/"'>{{ user.username }}</td>
                                         <td>
                                             <a target="_blank" href='/admin/api/userprofile/{{user.id}}/change/' class="btn btn-primary btn-sm edit-user">Edit</a>

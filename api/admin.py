@@ -20,7 +20,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(BorderRegistration)
 class BorderRegistrationAdmin(admin.ModelAdmin):
-    list_display=('theUser','idCardNo','reasonFor','userAddress','enteringDate','nationality','expireDate')
+    list_display=('theUser','reasonFor','userAddress','enteringDate','nationality','expireDate')
     # ordering: 
     search_fields=('fingerPrintCD','nationality','userAddress')
 

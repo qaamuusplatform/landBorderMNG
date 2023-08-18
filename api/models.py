@@ -99,7 +99,6 @@ class BorderRegistration(models.Model):
     borderCurrentState=models.CharField(max_length=255,choices=BORDER_CURRENT_STATUS,default='In')
     enteringDate=models.DateTimeField()
     visa=models.CharField(max_length=255,default='Visa_2Month__$150')
-    idCardNo=models.CharField(max_length=255)
     expireDate=models.DateTimeField(null=True,blank=True,default=three_month_from_today)
     userAddress=models.CharField(max_length=555)
     nationality=models.CharField(max_length=255,choices=NATIONALITY,default='Somalia')
@@ -126,7 +125,7 @@ class BorderRegistration(models.Model):
         # self.save()
         return super().save()
     def __str__(self) -> str:
-        return str(self.idCardNo)
+        return str(self.borderGeneratedId)
 
 
 class MessagesFor(models.Model):
